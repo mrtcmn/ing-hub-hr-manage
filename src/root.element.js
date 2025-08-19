@@ -22,11 +22,15 @@ class RootElement extends LitElement {
 
         // Try to get locale from html lang attribute or default to 'en'
         const savedLocale = document.documentElement.lang || 'en';
-        await this.changeLocale(savedLocale);
+        await this.changeLocale({
+            detail: {
+                locale: savedLocale
+            }
+        });
     }
 
     async changeLocale(event) {
-        if (event?.detail?.locale) {
+        if (!event?.detail?.locale) {
             return;
         }
         const locale = event?.detail?.locale

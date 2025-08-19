@@ -73,6 +73,7 @@ export class LocalePickerComponent extends LitElement {
     `;
 
     _handleLocaleChange(locale) {
+        this.isDropdownOpen = false;
         this.currentLocale = locale;
         this.dispatchEvent(new CustomEvent('locale-changed', {
             detail: { locale },

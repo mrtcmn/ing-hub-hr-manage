@@ -66,4 +66,17 @@ suite('LocalePickerComponent', () => {
         button.click();
         assert.isTrue(eventDispatched);
     });
+
+    test('should close dropdown when _handleLocaleChange is called', async () => {
+        const el = await fixture(html `
+      <locale-picker></locale-picker>
+    `);
+        el.isDropdownOpen = true;
+        await el.updateComplete;
+        assert.isTrue(el.isDropdownOpen);
+        
+        el._handleLocaleChange('tr');
+        await el.updateComplete;
+        assert.isFalse(el.isDropdownOpen);
+    });
 });
