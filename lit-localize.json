@@ -1,0 +1,13 @@
+{
+  "sourceLocale": "en",
+  "targetLocales": ["tr"],
+  "tsConfig": "./tsconfig.json",
+  "output": {
+    "mode": "runtime",
+    "outputDir": "./src/locales"
+  },
+  "interchange": {
+    "format": "xliff",
+    "path": "./locales"
+  }
+}

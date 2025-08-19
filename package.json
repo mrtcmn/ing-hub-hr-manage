@@ -22,7 +22,10 @@
     "test:prod": "MODE=prod wtr",
     "test:prod:watch": "MODE=prod wtr --watch",
     "checksize": "rollup -c ; cat my-element.bundled.js | gzip -9 | wc -c ; rm my-element.bundled.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "localize:extract": "lit-localize extract",
+    "localize:build": "lit-localize build",
+    "localize:build:watch": "lit-localize build --watch"
   },
   "keywords": [
     "web-components",
@@ -34,6 +37,8 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@commitlint/config-conventional": "^19.8.1",
+    "@lit/localize": "^0.12.2",
+    "@lit/localize-tools": "^0.8.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@vaadin/router": "^2.0.0",
     "lit": "^3.2.0",
