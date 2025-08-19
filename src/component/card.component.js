@@ -61,7 +61,7 @@ export class CardComponent extends LitElement {
       border-bottom-left-radius: 16px;
       border-bottom-right-radius: 16px;
       overflow: hidden;
-      border: 1px solid #d8cece;
+      border-bottom: 1px solid #d8cece;
     }
 
     .card-footer {

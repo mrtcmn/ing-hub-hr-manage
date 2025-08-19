@@ -41,6 +41,7 @@
     "@lit/localize": "^0.12.2",
     "@lit/localize-tools": "^0.8.0",
     "@vaadin/router": "^2.0.0",
+    "date-fns": "^4.1.0",
     "jest": "^30.0.5",
     "lit": "^3.2.0",
     "zustand": "^5.0.7"
