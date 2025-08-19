@@ -92,6 +92,9 @@ export class EmployeePage extends LitElement {
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
+            width: 100vw;
+            box-sizing: border-box;
+            overflow-x: auto;
         }
 
         .page-header {
@@ -131,6 +134,7 @@ export class EmployeePage extends LitElement {
             border: none;
             font-size: 14px;
             color: #333;
+            overflow-x: auto;
 
             thead {
                 background: #eaeaea;
@@ -216,6 +220,14 @@ export class EmployeePage extends LitElement {
             justify-content: space-between;
             align-items: center;
             padding: 0 5px;
+        }
+
+        @media (max-width: 768px) {
+            .table-pagination {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
         }
 
         .pagination-info {

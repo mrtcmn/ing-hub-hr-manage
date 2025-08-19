@@ -64,6 +64,14 @@ export class CardComponent extends LitElement {
       border-bottom: 1px solid #d8cece;
     }
 
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+      .card-body {
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+    }
+
     .card-footer {
       background: #eaeaea;
       padding: 0.5rem

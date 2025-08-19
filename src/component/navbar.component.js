@@ -38,6 +38,19 @@ export class NavbarComponent extends LitElement {
       background-color: #e9ecef;
     }
 
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+      :host {
+        padding: 10px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :host {
+        padding: 8px 10px;
+      }
+    }
+
     /* Your provided styles */
     .someclass { 
       border: 1px solid red; 

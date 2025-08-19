@@ -7,3 +7,21 @@ body {
     margin: 0;
     padding: 0;
 }
+
+/* Mobile responsive base styles */
+* {
+    box-sizing: border-box;
+}
+
+/* Ensure proper mobile viewport */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+}
