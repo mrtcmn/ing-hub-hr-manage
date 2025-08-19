@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import store from '../store/employee.store.js';
 import { getMessage } from '../utils/localization.js';
+import '../component/card.component.js';
 
 export class EmployeePage extends LitElement {
     static get properties() {
@@ -11,8 +12,8 @@ export class EmployeePage extends LitElement {
 
     constructor() {
         super();
-        this.employees = [];
-        
+        this.employees = store.getState().employees;
+
         // Subscribe to store changes
         store.subscribe((state) => {
             this.employees = state.employees;
@@ -79,49 +80,39 @@ export class EmployeePage extends LitElement {
             background: #0056b3;
         }
 
-        .employee-list {
+        table.employee-table {
             background: white;
-            border-radius: 8px;
+            width: 100%;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             overflow: hidden;
+            border-collapse: collapse;
+
+            thead {
+                background: #dadada;
+
+                tr {
+                    height: 40px;
+                }
+            }
+
+            tbody {
+                background: #f5f5f5;
+
+                tr {
+                    padding: 10px;
+                    border-bottom: 1px solid #dadada;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    td {
+                        padding: 10px;
+                    }
+                }
+            }
         }
 
-        .employee-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .employee-item:last-child {
-            border-bottom: none;
-        }
-
-        .employee-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex: 1;
-        }
-
-        .employee-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 1.1rem;
-        }
-
-        .employee-details {
-            display: flex;
-            gap: 20px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .employee-actions {
-            display: flex;
-            gap: 8px;
-        }
 
         .action-btn {
             padding: 6px 12px;
@@ -163,28 +154,44 @@ export class EmployeePage extends LitElement {
                     <button class="add-btn">${getMessage('add_employee')}</button>
                 </div>
                 
-                <div class="employee-list">
-                    ${this.employees.length === 0 
-                        ? html`<div class="no-employees">${getMessage('no_employees')}</div>`
-                        : this.employees.map(employee => html`
-                            <div class="employee-item">
-                                <div class="employee-info">
-                                    <div class="employee-name">${employee.name}</div>
-                                    <div class="employee-details">
-                                        <span>${employee.email || ''}</span>
-                                        <span>${employee.department || ''}</span>
-                                        <span>${employee.position || ''}</span>
-                                        <span>$${employee.salary ? employee.salary.toLocaleString() : ''}</span>
-                                    </div>
-                                </div>
-                                <div class="employee-actions">
-                                    <button class="action-btn edit-btn">${getMessage('edit_employee')}</button>
-                                    <button class="action-btn delete-btn">${getMessage('delete_employee')}</button>
-                                </div>
-                            </div>
-                        `)
-                    }
-                </div>
+                <card-component >
+                    ${this.employees.length === 0
+                ? html`<div class="no-employees">${getMessage('no_employees')}</div>`
+                : html`
+                            <table class="employee-table" slot="body">
+                                <thead>
+                                    <tr>
+                                        <th>${getMessage('name')}</th>
+                                        <th>${getMessage('email')}</th>
+                                        <th>${getMessage('department')}</th>
+                                        <th>${getMessage('position')}</th>
+                                        <th>${getMessage('salary')}</th>
+                                        <th>${getMessage('actions')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${this.employees.map(employee => html`
+                                    <tr>
+                                        <td>${employee.name}</td>
+                                        <td>${employee.email || ''}</td>
+                                        <td>${employee.department || ''}</td>
+                                        <td>${employee.position || ''}</td>
+                                        <td>$${employee.salary ? employee.salary.toLocaleString() : ''}</td>
+                                        <td>
+                                            <div class="employee-actions">
+                                                <button class="action-btn edit-btn">${getMessage('edit_employee')}</button>
+                                                <button class="action-btn delete-btn">${getMessage('delete_employee')}</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    `)}
+                                </tbody>
+                            </table>
+                    `}
+                    <div slot="footer">
+                        <button class="add-btn">${getMessage('add_employee')}</button>
+                    </div>
+                </card-component>
             </div>
         `;
     }
