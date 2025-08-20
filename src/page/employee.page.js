@@ -166,6 +166,12 @@ export class EmployeePage extends LitElement {
             margin: 0;
         }
 
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 0.9rem;
+            }
+        }
+
         .add-btn {
             background: #007bff;
             color: white;
@@ -241,9 +247,35 @@ export class EmployeePage extends LitElement {
             }
         }
 
+        @media (max-width: 768px) {
+            .employee-table {
+                font-size: 12px;
+
+                tbody {
+                    tr {
+                        td {
+                            padding: 2px !important;
+
+                            &:first-child {
+                                padding-left: 10px !important;
+                            }
+
+                            &:last-child {
+                                padding-right: 10px !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         .employee-actions {
             text-align: right;
             cursor: pointer;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            align-items: center;
             svg {
                 color: #ff6303;
                 width: 20px;

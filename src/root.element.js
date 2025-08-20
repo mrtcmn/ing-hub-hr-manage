@@ -69,6 +69,7 @@ class RootElement extends LitElement {
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
 
             span {
                 font-size: 16px;

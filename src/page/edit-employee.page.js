@@ -4,7 +4,9 @@ import { z } from 'zod';
 import store, { DEPARTMENTS, POSITIONS } from '../store/employee.store.js';
 import { getMessage, formatMessage } from '../utils/localization.js';
 import '../component/input.component.js';
+import '../component/edit-confirmation-modal.component.js';
 import { Router } from '@vaadin/router';
+import { createRef, ref } from 'lit/directives/ref.js';
 
 // Employee validation schema using Zod
 const employeeSchema = z.object({
@@ -49,6 +51,8 @@ export class EditEmployeePage extends LitElement {
             stateOfUpdateOfCreate: { type: String }
         };
     }
+
+    editConfirmationModalRef = createRef();
 
     constructor() {
         super();
@@ -132,7 +136,6 @@ export class EditEmployeePage extends LitElement {
         }
 
         if (this.employeeId === 'new') {
-
             this.isSubmitting = true;
             await fakeLoading(2000);
             store.getState().addEmployee(this.form.api.state.values);
@@ -143,6 +146,16 @@ export class EditEmployeePage extends LitElement {
             return;
         }
 
+        // For existing employees, show confirmation modal
+        const employeeName = `${this.employee.firstName} ${this.employee.lastName}`;
+        if (this.editConfirmationModalRef.value) {
+            this.editConfirmationModalRef.value.open(employeeName);
+        } else {
+            console.error('Edit confirmation modal ref is not ready yet');
+        }
+    }
+
+    async handleEditConfirmed() {
         this.isSubmitting = true;
         await fakeLoading(2000);
         try {
@@ -154,7 +167,6 @@ export class EditEmployeePage extends LitElement {
                 ...formData,
                 dateOfEmployment: new Date(formData.dateOfEmployment).toISOString()
             });
-
 
             this.stateOfUpdateOfCreate = 'success';
             // Redirect back to employee list
@@ -480,6 +492,11 @@ export class EditEmployeePage extends LitElement {
                         ></app-button>
         </div>
     </card-component>
+    
+    <edit-confirmation-modal
+        @editConfirmed=${this.handleEditConfirmed}
+         ${ref(this.editConfirmationModalRef)}
+    ></edit-confirmation-modal>
         `;
     }
 
@@ -497,7 +514,7 @@ export class EditEmployeePage extends LitElement {
             }
 
             .header {
-                padding: 10px;
+                padding: 20px 10px;
                 text-align: left;
             }
 

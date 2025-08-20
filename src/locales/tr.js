@@ -85,5 +85,6 @@ export const messages = {
   'last_page': 'Son sayfa',
   'edit_employee_title': 'Çalışanı Düzenle',
   'delete_employee_title': 'Çalışanı Sil',
-  'button': 'Düğme'
+  'button': 'Düğme',
+  'confirm_edit_employee': '{0} için bilgileri güncellemek istediğinizden emin misiniz?'
 };

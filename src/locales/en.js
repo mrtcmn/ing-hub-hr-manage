@@ -96,5 +96,6 @@ export const messages = {
   'last_page': 'Last page',
   'edit_employee_title': 'Edit Employee',
   'delete_employee_title': 'Delete Employee',
-  'button': 'Button'
+  'button': 'Button',
+  'confirm_edit_employee': 'Are you sure you want to update the information for {0}?'
 };

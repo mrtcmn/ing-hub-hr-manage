@@ -66,6 +66,10 @@ export class LocalePickerComponent extends LitElement {
                 border-radius: 4px;
                 padding: 4px;
                 z-index: 1000;
+
+                button:first-child {
+                    margin-bottom: 4px;
+                }
             }
         }
 
@@ -73,8 +77,8 @@ export class LocalePickerComponent extends LitElement {
     `;
 
     _handleLocaleChange(locale) {
-        this.isDropdownOpen = false;
         this.currentLocale = locale;
+        this.isDropdownOpen = false;
         this.dispatchEvent(new CustomEvent('locale-changed', {
             detail: { locale },
             bubbles: true,
