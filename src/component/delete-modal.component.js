@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import '../component/card.component.js';
 import store from '../store/employee.store.js';
+import { getMessage, formatMessage } from '../utils/localization.js';
 
 export class DeleteModalComponent extends LitElement {
   static properties = {
@@ -226,11 +227,11 @@ export class DeleteModalComponent extends LitElement {
       <div class="modal-container">
         <card-component background="white">
           <div slot="header" class="modal-header">
-            <h2 class="modal-title">Are you sure?</h2>
+            <h2 class="modal-title">${getMessage('are_you_sure')}</h2>
             <button 
               class="close-button" 
               @click=${this.close}
-              title="Close">
+              title="${getMessage('close')}">
               <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -239,12 +240,12 @@ export class DeleteModalComponent extends LitElement {
           </div>
           
           <div slot="body" class="modal-message">
-            Selected Employee record of <strong>${this.employeeName}</strong> will be deleted.
+            ${formatMessage(getMessage('selected_employee_will_be_deleted'), this.employeeName)}
           </div>
           
           <div slot="footer" class="modal-actions">
-            <app-button label="Cancel" @click=${this.handleCancel}></app-button>
-            <app-button label="Proceed" @click=${this.handleProceed} variant="secondary" ?loading=${this.isLoadingOnProceed}></app-button>
+            <app-button label="${getMessage('cancel')}" @click=${this.handleCancel}></app-button>
+            <app-button label="${getMessage('proceed')}" @click=${this.handleProceed} variant="secondary" ?loading=${this.isLoadingOnProceed}></app-button>
           
           </div>
         </card-component>

@@ -9,30 +9,28 @@ import { Router } from '@vaadin/router';
 // Employee validation schema using Zod
 const employeeSchema = z.object({
     firstName: z.string()
-        .min(2, 'First name must be at least 2 characters')
-        .max(50, 'First name must be less than 50 characters')
-        .regex(/^[a-zA-Z\s]+$/, 'First name can only contain letters and spaces'),
+        .min(2, 'first_name_min_length')
+        .max(50, 'first_name_max_length')
+        .regex(/^[a-zA-Z\s]+$/, 'first_name_invalid_chars'),
     lastName: z.string()
-        .min(2, 'Last name must be at least 2 characters')
-        .max(50, 'Last name must be less than 50 characters')
-        .regex(/^[a-zA-Z\s]+$/, 'Last name can only contain letters and spaces'),
+        .min(2, 'last_name_min_length')
+        .max(50, 'last_name_max_length')
+        .regex(/^[a-zA-Z\s]+$/, 'last_name_invalid_chars'),
     email: z
-        .email('Please enter a valid email address')
-        .min(5, 'Email must be at least 5 characters')
-        .max(100, 'Email must be less than 100 characters'),
+        .email('email_invalid')
+        .min(5, 'email_min_length')
+        .max(100, 'email_max_length'),
     phone: z.string()
-        .regex(/^[\d\s\-\+\(\)]+$/, 'Please enter a valid phone number')
-        .min(10, 'Phone number must be at least 10 digits')
-        .max(20, 'Phone number must be less than 20 characters'),
+        .regex(/^[\d\s\-\+\(\)]+$/, 'phone_invalid')
+        .min(10, 'phone_min_length')
+        .max(20, 'phone_max_length'),
     department: z.string()
-        .min(1, 'Please select a department'),
+        .min(1, 'department_required'),
     position: z.string()
-        .min(1, 'Please select a position'),
+        .min(1, 'position_required'),
     salary: z.number()
-        .min(30000, 'Salary must be at least $30,000')
-        .max(200000, 'Salary must be less than $200,000'),
-    dateOfEmployment: z.string()
-        .min(1, 'Please select a date of employment')
+        .min(1, 'salary_min'),
+    dateOfEmployment: z.coerce.date().max(new Date(), 'date_future_error')
 });
 
 
@@ -87,9 +85,15 @@ export class EditEmployeePage extends LitElement {
     async loadEmployee() {
         const urlParams = new URLSearchParams(window.location.search);
         this.employeeId = urlParams.get('id');
+
+        if (this.employeeId === 'new') {
+
+          
+            return;
+        }
         
         if (!this.employeeId) {
-            this.error = 'No employee ID provided';
+            this.error = getMessage('no_employee_id');
             return;
         }
 
@@ -98,7 +102,7 @@ export class EditEmployeePage extends LitElement {
             this.employee = store.getState().getEmployee(parseInt(this.employeeId));
             
             if (!this.employee) {
-                this.error = 'Employee not found';
+                this.error = getMessage('employee_not_found_error');
                 return;
             }
 
@@ -113,7 +117,7 @@ export class EditEmployeePage extends LitElement {
             this.form.api.setFieldValue('dateOfEmployment', this.employee.dateOfEmployment.split('T')[0]);
             
         } catch (error) {
-            this.error = 'Failed to load employee data';
+            this.error = getMessage('failed_load_employee');
             console.error('Error loading employee:', error);
         } finally {
             this.isLoading = false;
@@ -122,8 +126,20 @@ export class EditEmployeePage extends LitElement {
 
     async handleSubmit(e) {
         e.preventDefault();
-        
-        if (!this.form.api.state.canSubmit) {
+
+        if (!this.form.api.state.canSubmit || !this.form.api.state.isDirty) {
+            return;
+        }
+
+        if (this.employeeId === 'new') {
+            
+            this.isSubmitting = true;
+            await fakeLoading(2000);
+            store.getState().addEmployee(this.form.api.state.values);
+            this.stateOfUpdateOfCreate = 'success';
+            await fakeLoading(2000);
+            Router.go('/');
+            this.isSubmitting = false;
             return;
         }
 
@@ -145,7 +161,7 @@ export class EditEmployeePage extends LitElement {
             await fakeLoading(2000);
             Router.go('/');
         } catch (error) {
-            this.error = 'Failed to update employee';
+            this.error = getMessage('failed_update_employee');
             console.error('Error updating employee:', error);
             this.stateOfUpdateOfCreate = 'error';
         } finally {
@@ -157,12 +173,16 @@ export class EditEmployeePage extends LitElement {
         Router.go('/');
     }
 
+    getError(field) {
+        return field.state.meta?.isDirty ? field.state.meta?.errors?.map(i=> getMessage(i?.message)).join(', ') : '';
+    }
+
     render() {
         if (this.isLoading) {
             return html`
                 <div class="loading-container">
                     <div class="spinner"></div>
-                    <p>Loading employee data...</p>
+                    <p>${getMessage('loading_employee_data')}</p>
                 </div>
             `;
         }
@@ -170,10 +190,10 @@ export class EditEmployeePage extends LitElement {
         if (this.error) {
             return html`
                 <div class="error-container">
-                    <h2>Error</h2>
+                    <h2>${getMessage('error')}</h2>
                     <p>${this.error}</p>
                     <app-button 
-                        label="Go Back" 
+                        label="${getMessage('go_back')}" 
                         @click=${this.handleCancel}
                         variant="secondary"
                     ></app-button>
@@ -181,13 +201,13 @@ export class EditEmployeePage extends LitElement {
             `;
         }
 
-        if (!this.employee) {
+        if (!this.employee && this.employeeId !== 'new') {
             return html`
                 <div class="not-found-container">
-                    <h2>Employee Not Found</h2>
-                    <p>The employee you're looking for doesn't exist.</p>
+                    <h2>${getMessage('employee_not_found')}</h2>
+                    <p>${getMessage('employee_not_found_message')}</p>
                     <app-button 
-                        label="Go Back" 
+                        label="${getMessage('go_back')}" 
                         @click=${this.handleCancel}
                         variant="secondary"
                     ></app-button>
@@ -197,10 +217,10 @@ export class EditEmployeePage extends LitElement {
 
         return html`
             <card-component background="white" statusOfBottomBar=${this.stateOfUpdateOfCreate}>
-                <div slot="body" class={edit-employee-container">
+                <div slot="body" class={edit-employee-container}>
                 <div class="header">
-                    <h2 class="header-title">Edit Employee</h2>
-                    <p>Update employee information for ${this.employee.firstName} ${this.employee.lastName}</p>
+                    <h2 class="header-title">${getMessage('edit_employee')}</h2>
+                    ${this.employeeId === 'new' ? html`<p>${getMessage('create_new_employee')}</p>` : html`<p>${formatMessage(getMessage('update_employee_info'), this.employee.firstName, this.employee.lastName)}</p>`}
                 </div>
 
             <div class="form-grid">
@@ -212,13 +232,13 @@ export class EditEmployeePage extends LitElement {
                                 validators: {
                                     onChange: ({ value }) => {
                                         if (!value || value.length < 2) {
-                                            return 'First name must be at least 2 characters';
+                                            return getMessage('first_name_min_length');
                                         }
                                         if (value.length > 50) {
-                                            return 'First name must be less than 50 characters';
+                                            return getMessage('first_name_max_length');
                                         }
                                         if (!/^[a-zA-Z\s]+$/.test(value)) {
-                                            return 'First name can only contain letters and spaces';
+                                            return getMessage('first_name_invalid_chars');
                                         }
                                         return undefined;
                                     }
@@ -226,12 +246,12 @@ export class EditEmployeePage extends LitElement {
                             },
                             (field) => html`
                                 <text-input
-                                    label="First Name"
+                                    label="${getMessage('first_name')}"
                                     .value=${field.state.value}
-                                    .error=${field.state.meta?.errors?.join(', ')}
+                                    .error=${this.getError(field)}
                                     .required=${true}
                                     name="firstName"
-                                    placeholder="Enter first name"
+                                    placeholder="${getMessage('enter_first_name')}"
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
@@ -241,15 +261,15 @@ export class EditEmployeePage extends LitElement {
                             {
                                 name: 'lastName',
                                 validators: {
-                                    onChange: ({ value }) => {
+                                    onBlur: ({ value }) => {
                                         if (!value || value.length < 2) {
-                                            return 'Last name must be at least 2 characters';
+                                            return getMessage('last_name_min_length');
                                         }
                                         if (value.length > 50) {
-                                            return 'Last name must be less than 50 characters';
+                                            return getMessage('last_name_max_length');
                                         }
                                         if (!/^[a-zA-Z\s]+$/.test(value)) {
-                                            return 'Last name can only contain letters and spaces';
+                                            return getMessage('last_name_invalid_chars');
                                         }
                                         return undefined;
                                     }
@@ -257,12 +277,12 @@ export class EditEmployeePage extends LitElement {
                             },
                             (field) => html`
                                 <text-input
-                                    label="Last Name"
+                                    label="${getMessage('last_name')}"
                                     .value=${field.state.value}
-                                    .error=${field.state.meta?.errors?.join(', ')}
+                                    .error=${this.getError(field)}
                                     .required=${true}
                                     name="lastName"
-                                    placeholder="Enter last name"
+                                    placeholder="${getMessage('enter_last_name')}"
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
@@ -272,10 +292,10 @@ export class EditEmployeePage extends LitElement {
                             {
                                 name: 'email',
                                 validators: {
-                                    onChange: ({ value }) => {
-                                        if (!value) return 'Email is required';
+                                    onBlur: ({ value }) => {
+                                        if (!value) return getMessage('email_required');
                                         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                                            return 'Please enter a valid email address';
+                                            return getMessage('email_invalid');
                                         }
                                         return undefined;
                                     }
@@ -283,13 +303,13 @@ export class EditEmployeePage extends LitElement {
                             },
                             (field) => html`
                                 <text-input
-                                    label="Email"
+                                    label="${getMessage('email')}"
                                     .value=${field.state.value}
-                                    .error=${field.state.meta?.errors?.join(', ')}
+                                    .error=${this.getError(field)}
                                     .required=${true}
                                     name="email"
                                     type="email"
-                                    placeholder="Enter email address"
+                                    placeholder="${getMessage('enter_email_address')}"
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
@@ -299,13 +319,13 @@ export class EditEmployeePage extends LitElement {
                             {
                                 name: 'phone',
                                 validators: {
-                                    onChange: ({ value }) => {
-                                        if (!value) return 'Phone number is required';
+                                    onBlur: ({ value }) => {
+                                        if (!value) return getMessage('phone_required');
                                         if (!/^[\d\s\-\+\(\)]+$/.test(value)) {
-                                            return 'Please enter a valid phone number';
+                                            return getMessage('phone_invalid');
                                         }
                                         if (value.replace(/\D/g, '').length < 10) {
-                                            return 'Phone number must be at least 10 digits';
+                                            return getMessage('phone_min_length');
                                         }
                                         return undefined;
                                     }
@@ -313,12 +333,12 @@ export class EditEmployeePage extends LitElement {
                             },
                             (field) => html`
                                 <text-input
-                                    label="Phone"
+                                    label="${getMessage('phone')}"
                                     .value=${field.state.value}
-                                    .error=${field.state.meta?.errors?.join(', ')}
+                                    .error=${this.getError(field)}
                                     .required=${true}
                                     name="phone"
-                                    placeholder="Enter phone number"
+                                    placeholder="${getMessage('enter_phone_number')}"
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
@@ -328,17 +348,17 @@ export class EditEmployeePage extends LitElement {
                             {
                                 name: 'department',
                                 validators: {
-                                    onChange: ({ value }) => {
-                                        if (!value) return 'Please select a department';
+                                    onBlur: ({ value }) => {
+                                        if (!value) return getMessage('department_required');
                                         return undefined;
                                     }
                                 }
                             },
                             (field) => html`
                                 <input-dropdown
-                                    label="Department"
+                                    label="${getMessage('department')}"
                                     .value=${field.state.value}
-                                    .error=${field.state.meta?.errors?.join(', ')}
+                                    .error=${this.getError(field)}
                                     .required=${true}
                                     name="department"
                                     .options=${DEPARTMENTS.map(dept => ({
@@ -354,17 +374,17 @@ export class EditEmployeePage extends LitElement {
                             {
                                 name: 'position',
                                 validators: {
-                                    onChange: ({ value }) => {
-                                        if (!value) return 'Please select a position';
+                                    onBlur: ({ value }) => {
+                                        if (!value) return getMessage('position_required');
                                         return undefined;
                                     }
                                 }
                             },
                             (field) => html`
                                 <input-dropdown
-                                    label="Position"
+                                    label="${getMessage('position')}"
                                     .value=${field.state.value}
-                                    .error=${field.state.meta?.errors?.join(', ')}
+                                    .error=${this.getError(field)}
                                     .required=${true}
                                     name="position"
                                     .options=${POSITIONS.map(pos => ({
@@ -380,12 +400,12 @@ export class EditEmployeePage extends LitElement {
                             {
                                 name: 'salary',
                                 validators: {
-                                    onChange: ({ value }) => {
+                                    onBlur: ({ value }) => {
                                         if (!value || value < 30000) {
-                                            return 'Salary must be at least $30,000';
+                                            return getMessage('salary_min');
                                         }
                                         if (value > 200000) {
-                                            return 'Salary must be less than $200,000';
+                                            return getMessage('salary_max');
                                         }
                                         return undefined;
                                     }
@@ -393,13 +413,13 @@ export class EditEmployeePage extends LitElement {
                             },
                             (field) => html`
                                 <text-input
-                                    label="Salary"
+                                    label="${getMessage('salary')}"
                                     .value=${field.state.value}
-                                    .error=${field.state.meta?.errors?.join(', ')}
+                                    .error=${this.getError(field)}
                                     .required=${true}
                                     name="salary"
                                     type="number"
-                                    placeholder="Enter salary"
+                                    placeholder="${getMessage('enter_salary')}"
                                     @input=${(e) => field.handleChange(parseInt(e.currentTarget.value) || 0)}
                                 ></text-input>
                             `
@@ -409,12 +429,12 @@ export class EditEmployeePage extends LitElement {
                             {
                                 name: 'dateOfEmployment',
                                 validators: {
-                                    onChange: ({ value }) => {
-                                        if (!value) return 'Please select a date of employment';
+                                    onBlur: ({ value }) => {
+                                        if (!value) return getMessage('date_required');
                                         const selectedDate = new Date(value);
                                         const today = new Date();
                                         if (selectedDate > today) {
-                                            return 'Date of employment cannot be in the future';
+                                            return getMessage('date_future_error');
                                         }
                                         return undefined;
                                     }
@@ -422,9 +442,9 @@ export class EditEmployeePage extends LitElement {
                             },
                             (field) => html`
                                 <text-input
-                                    label="Date of Employment"
+                                    label="${getMessage('date_of_employment')}"
                                     .value=${field.state.value}
-                                    .error=${field.state.meta?.errors?.join(', ')}
+                                    .error=${this.getError(field)}
                                     .required=${true}
                                     name="dateOfEmployment"
                                     type="date"
@@ -440,15 +460,15 @@ export class EditEmployeePage extends LitElement {
         </div>
         <div class="form-actions" slot="footer">
                         <app-button
-                            label="Cancel"
+                            label="${getMessage('cancel')}"
                             @click=${this.handleCancel}
                             variant="secondary"
                         ></app-button>
                         
                         <app-button
-                            label=${this.isSubmitting ? 'Updating...' : 'Update Employee'}
+                            label=${this.isSubmitting ? getMessage('updating') : this.employeeId === 'new' ? getMessage('create_employee') : getMessage('update_employee')}
                             @click=${this.handleSubmit}
-                            ?disabled=${!this.form.api.state.canSubmit || this.isSubmitting}
+                            ?disabled=${!this.form.api.state.canSubmit || this.isSubmitting || !this.form.api.state.isDirty}
                             .loading=${this.isSubmitting}
                         ></app-button>
                     </div>

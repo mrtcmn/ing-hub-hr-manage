@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { getMessage } from '../utils/localization.js';
 
 export class BaseInput extends LitElement {
     static get styles() {
@@ -17,7 +18,7 @@ export class BaseInput extends LitElement {
         --input-focus-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         --input-disabled-background: #f7fafc;
         --input-disabled-color: #a0aec0;
-        --input-error-border-color: #e53e3e;
+        --input-error-border-color: #e35f5fd7;
         --input-error-background: #fed7d7;
         --input-transition: all 0.2s ease-in-out;
       }
@@ -142,7 +143,7 @@ export class TextInput extends LitElement {
         --text-input-disabled-background: #f7fafc;
         --text-input-disabled-color: #a0aec0;
         --text-input-error-border-color: #e53e3e;
-        --text-input-error-background: #fed7d7;
+        --text-input-error-background: #f9ebeb;
         --text-input-transition: all 0.2s ease-in-out;
       }
 
@@ -340,6 +341,11 @@ export class Dropdown extends LitElement {
         color: var(--dropdown-disabled-color);
         cursor: not-allowed;
       }
+
+      .dropdown-select option[value=""] {
+        color: #a0aec0;
+        font-style: italic;
+      }
     `;
     }
 
@@ -382,7 +388,7 @@ export class Dropdown extends LitElement {
           name="${this.name}"
           @change=${this._handleChange}
         >
-          ${!this.required ? html`<option value="">Select an option</option>` : ''}
+          <option value="" disabled ${!this.value ? 'selected' : ''}>Please select</option>
           ${this.options?.map(option => html`
             <option 
               class="dropdown-option"
@@ -524,7 +530,7 @@ export class Button extends LitElement {
 
     constructor() {
         super();
-        this.label = 'Button';
+        this.label = getMessage('button');
         this.disabled = false;
         this.loading = false;
         this.type = 'button';
