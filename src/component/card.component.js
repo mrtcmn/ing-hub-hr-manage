@@ -9,7 +9,8 @@ export class CardComponent extends LitElement {
   static properties = {
     loading: { type: Boolean, reflect: true },
     background: { type: String, reflect: true },
-    bodyHidden: { type: Boolean, reflect: true }
+    bodyHidden: { type: Boolean, reflect: true },
+    statusOfBottomBar: { type: String, reflect: true }
   };
 
   static styles = css`
@@ -80,7 +81,17 @@ export class CardComponent extends LitElement {
 
     .card-footer {
       background: #f9f9f9d9;
-      padding: 0.5rem
+      padding: 0.5rem;
+
+      transition: background 0.8s ease;
+    }
+
+    .card-footer.success {
+      background: #ebfae8d9;
+    }
+
+    .card-footer.error {
+      background: #fbeced;
     }
 
   `;
@@ -108,7 +119,7 @@ export class CardComponent extends LitElement {
         <div class="card-body" ?hidden=${this.bodyHidden}>
           <slot name="body"></slot>
         </div>
-        <div class="card-footer">
+        <div class=${"card-footer " + this.statusOfBottomBar}>
           <slot name="footer"></slot>
         </div>
       </div>
