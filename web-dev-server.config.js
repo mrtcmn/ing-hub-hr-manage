@@ -22,4 +22,23 @@ export default {
       },
     }),
   ],
+  // SPA routing configuration - serve index.html for all routes
+  appIndex: 'index.html',
+  // Handle client-side routing by serving index.html for all paths
+  // This allows the SPA to handle routing on the client side
+  historyApiFallback: true,
+  // Custom middleware to handle SPA routing
+  middleware: [
+    (context, next) => {
+      // Check if the request is for a file (has extension)
+      const hasExtension = /\.[^/]+$/.test(context.url);
+      
+      // If it's not a file request and not already index.html, serve index.html
+      if (!hasExtension && !context.url.includes('index.html')) {
+        context.url = '/index.html';
+      }
+      
+      return next();
+    }
+  ],
 };

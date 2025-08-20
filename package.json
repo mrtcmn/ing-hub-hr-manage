@@ -40,10 +40,12 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@lit/localize": "^0.12.2",
     "@lit/localize-tools": "^0.8.0",
+    "@tanstack/lit-form": "^1.19.2",
     "@vaadin/router": "^2.0.0",
     "date-fns": "^4.1.0",
     "jest": "^30.0.5",
     "lit": "^3.2.0",
+    "zod": "^4.0.17",
     "zustand": "^5.0.7"
   },
   "devDependencies": {

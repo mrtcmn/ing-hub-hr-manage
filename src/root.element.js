@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import './my-element.js';
 import './page/employee.page.js';
+import './page/edit-employee.page.js';
 import './component/navbar.component.js';
 import { Router } from '@vaadin/router';
 import { setLocale } from './locales/en.js';
@@ -59,6 +60,7 @@ class RootElement extends LitElement {
         const router = new Router(this.shadowRoot.querySelector('#outlet'));
         router.setRoutes([
             { path: '/', component: 'employee-page' },
+            { path: '/edit-employee', component: 'edit-employee-page' },
             { path: '/users', component: 'x-user-list' },
             { path: '/users/:userId', component: 'x-user-detail' }
         ]);
