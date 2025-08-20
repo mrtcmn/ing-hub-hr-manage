@@ -86,5 +86,11 @@ export const messages = {
   'edit_employee_title': 'Çalışanı Düzenle',
   'delete_employee_title': 'Çalışanı Sil',
   'button': 'Düğme',
-  'confirm_edit_employee': '{0} için bilgileri güncellemek istediğinizden emin misiniz?'
+  'confirm_edit_employee': '{0} için bilgileri güncellemek istediğinizden emin misiniz?',
+  // Uniqueness validation messages
+  'first_name_last_name_birthday_exists': 'Bu ad, soyad ve doğum tarihi kombinasyonuna sahip bir çalışan zaten mevcut',
+  'first_name_last_name_exists': 'Bu ad ve soyada sahip bir çalışan zaten mevcut',
+  'email_already_exists': 'Bu e-posta adresine sahip bir çalışan zaten mevcut',
+  'enter_date_of_birth': 'Doğum tarihi girin',
+  'date_of_birth_required': 'Doğum tarihi gerekli'
 };

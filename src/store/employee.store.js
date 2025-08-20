@@ -14,7 +14,8 @@ const store = createStore((set, get) => ({
             department: 'Analytics',
             position: 'Senior',
             salary: 75000,
-            dateOfEmployment: '2022-01-15T00:00:00.000Z'
+            dateOfEmployment: '2022-01-15T00:00:00.000Z',
+            dateOfBirth: '1985-03-15T00:00:00.000Z'
         },
         {
             id: 2,
@@ -25,7 +26,8 @@ const store = createStore((set, get) => ({
             department: 'Tech',
             position: 'Lead',
             salary: 85000,
-            dateOfEmployment: '2021-06-20T00:00:00.000Z'
+            dateOfEmployment: '2021-06-20T00:00:00.000Z',
+            dateOfBirth: '1988-07-22T00:00:00.000Z'
         },
         {
             id: 3,
@@ -36,7 +38,8 @@ const store = createStore((set, get) => ({
             department: 'Marketing',
             position: 'Medior',
             salary: 65000,
-            dateOfEmployment: '2023-03-10T00:00:00.000Z'
+            dateOfEmployment: '2023-03-10T00:00:00.000Z',
+            dateOfBirth: '1990-11-08T00:00:00.000Z'
         },
         {
             id: 4,
@@ -47,7 +50,8 @@ const store = createStore((set, get) => ({
             department: 'Sales',
             position: 'Senior',
             salary: 70000,
-            dateOfEmployment: '2022-08-15T00:00:00.000Z'
+            dateOfEmployment: '2022-08-15T00:00:00.000Z',
+            dateOfBirth: '1987-04-12T00:00:00.000Z'
         },
         {
             id: 5,
@@ -58,7 +62,8 @@ const store = createStore((set, get) => ({
             department: 'Tech',
             position: 'Junior',
             salary: 55000,
-            dateOfEmployment: '2023-09-01T00:00:00.000Z'
+            dateOfEmployment: '2023-09-01T00:00:00.000Z',
+            dateOfBirth: '1995-09-25T00:00:00.000Z'
         },
         {
             id: 6,
@@ -69,7 +74,8 @@ const store = createStore((set, get) => ({
             department: 'HR',
             position: 'Medior',
             salary: 60000,
-            dateOfEmployment: '2022-11-20T00:00:00.000Z'
+            dateOfEmployment: '2022-11-20T00:00:00.000Z',
+            dateOfBirth: '1992-01-30T00:00:00.000Z'
         },
         {
             id: 7,
@@ -80,7 +86,8 @@ const store = createStore((set, get) => ({
             department: 'Analytics',
             position: 'Lead',
             salary: 80000,
-            dateOfEmployment: '2021-12-10T00:00:00.000Z'
+            dateOfEmployment: '2021-12-10T00:00:00.000Z',
+            dateOfBirth: '1983-12-05T00:00:00.000Z'
         },
         {
             id: 8,
@@ -91,7 +98,8 @@ const store = createStore((set, get) => ({
             department: 'Marketing',
             position: 'Manager',
             salary: 90000,
-            dateOfEmployment: '2020-05-15T00:00:00.000Z'
+            dateOfEmployment: '2020-05-15T00:00:00.000Z',
+            dateOfBirth: '1980-06-18T00:00:00.000Z'
         },
         {
             id: 9,
@@ -102,7 +110,8 @@ const store = createStore((set, get) => ({
             department: 'Sales',
             position: 'Junior',
             salary: 50000,
-            dateOfEmployment: '2023-06-01T00:00:00.000Z'
+            dateOfEmployment: '2023-06-01T00:00:00.000Z',
+            dateOfBirth: '1997-02-14T00:00:00.000Z'
         },
         {
             id: 10,
@@ -113,7 +122,8 @@ const store = createStore((set, get) => ({
             department: 'Tech',
             position: 'Senior',
             salary: 75000,
-            dateOfEmployment: '2022-03-20T00:00:00.000Z'
+            dateOfEmployment: '2022-03-20T00:00:00.000Z',
+            dateOfBirth: '1986-10-03T00:00:00.000Z'
         },
         {
             id: 11,
@@ -124,7 +134,8 @@ const store = createStore((set, get) => ({
             department: 'Analytics',
             position: 'Medior',
             salary: 65000,
-            dateOfEmployment: '2023-01-10T00:00:00.000Z'
+            dateOfEmployment: '2023-01-10T00:00:00.000Z',
+            dateOfBirth: '1991-05-20T00:00:00.000Z'
         },
         {
             id: 12,
@@ -135,7 +146,8 @@ const store = createStore((set, get) => ({
             department: 'HR',
             position: 'Senior',
             salary: 70000,
-            dateOfEmployment: '2021-09-05T00:00:00.000Z'
+            dateOfEmployment: '2021-09-05T00:00:00.000Z',
+            dateOfBirth: '1989-08-27T00:00:00.000Z'
         },
         {
             id: 13,
@@ -146,7 +158,8 @@ const store = createStore((set, get) => ({
             department: 'Marketing',
             position: 'Junior',
             salary: 52000,
-            dateOfEmployment: '2023-07-15T00:00:00.000Z'
+            dateOfEmployment: '2023-07-15T00:00:00.000Z',
+            dateOfBirth: '1996-03-11T00:00:00.000Z'
         },
         {
             id: 14,
@@ -157,7 +170,8 @@ const store = createStore((set, get) => ({
             department: 'Sales',
             position: 'Medior',
             salary: 62000,
-            dateOfEmployment: '2022-12-01T00:00:00.000Z'
+            dateOfEmployment: '2022-12-01T00:00:00.000Z',
+            dateOfBirth: '1993-07-09T00:00:00.000Z'
         },
         {
             id: 15,
@@ -168,7 +182,8 @@ const store = createStore((set, get) => ({
             department: 'Tech',
             position: 'Lead',
             salary: 82000,
-            dateOfEmployment: '2021-04-20T00:00:00.000Z'
+            dateOfEmployment: '2021-04-20T00:00:00.000Z',
+            dateOfBirth: '1984-11-16T00:00:00.000Z'
         },
         {
             id: 16,
@@ -179,7 +194,8 @@ const store = createStore((set, get) => ({
             department: 'Analytics',
             position: 'Junior',
             salary: 54000,
-            dateOfEmployment: '2023-10-01T00:00:00.000Z'
+            dateOfEmployment: '2023-10-01T00:00:00.000Z',
+            dateOfBirth: '1998-01-05T00:00:00.000Z'
         },
         {
             id: 17,
@@ -190,7 +206,8 @@ const store = createStore((set, get) => ({
             department: 'Marketing',
             position: 'Senior',
             salary: 72000,
-            dateOfEmployment: '2022-06-15T00:00:00.000Z'
+            dateOfEmployment: '2022-06-15T00:00:00.000Z',
+            dateOfBirth: '1988-12-22T00:00:00.000Z'
         },
         {
             id: 18,
@@ -201,7 +218,8 @@ const store = createStore((set, get) => ({
             department: 'HR',
             position: 'Junior',
             salary: 48000,
-            dateOfEmployment: '2023-11-01T00:00:00.000Z'
+            dateOfEmployment: '2023-11-01T00:00:00.000Z',
+            dateOfBirth: '1999-04-08T00:00:00.000Z'
         },
         {
             id: 19,
@@ -212,7 +230,8 @@ const store = createStore((set, get) => ({
             department: 'Sales',
             position: 'Manager',
             salary: 95000,
-            dateOfEmployment: '2020-08-10T00:00:00.000Z'
+            dateOfEmployment: '2020-08-10T00:00:00.000Z',
+            dateOfBirth: '1978-09-30T00:00:00.000Z'
         },
         {
             id: 20,
@@ -223,7 +242,8 @@ const store = createStore((set, get) => ({
             department: 'Tech',
             position: 'Medior',
             salary: 68000,
-            dateOfEmployment: '2022-02-28T00:00:00.000Z'
+            dateOfEmployment: '2022-02-28T00:00:00.000Z',
+            dateOfBirth: '1990-03-17T00:00:00.000Z'
         },
         {
             id: 21,
@@ -234,7 +254,8 @@ const store = createStore((set, get) => ({
             department: 'Analytics',
             position: 'Senior',
             salary: 78000,
-            dateOfEmployment: '2021-11-15T00:00:00.000Z'
+            dateOfEmployment: '2021-11-15T00:00:00.000Z',
+            dateOfBirth: '1982-06-25T00:00:00.000Z'
         },
         {
             id: 22,
@@ -245,12 +266,17 @@ const store = createStore((set, get) => ({
             department: 'Marketing',
             position: 'Lead',
             salary: 85000,
-            dateOfEmployment: '2020-12-01T00:00:00.000Z'
+            dateOfEmployment: '2020-12-01T00:00:00.000Z',
+            dateOfBirth: '1981-01-12T00:00:00.000Z'
         }
     ],
 
     addEmployee: (newEmployee) => set(state => ({
-        employees: [...state.employees, { ...newEmployee, id: Date.now() }]
+        employees: [...state.employees, { 
+            ...newEmployee, 
+            id: Date.now(),
+            dateOfBirth: newEmployee.dateOfBirth ? new Date(newEmployee.dateOfBirth).toISOString() : null
+        }]
     })),
 
     removeEmployee: (id) => set(state => ({
@@ -273,6 +299,42 @@ const store = createStore((set, get) => ({
     getAllEmployees: () => {
         const state = get();
         return state.employees;
+    },
+
+    // Check if first name + last name + birthday combination already exists
+    checkNameBirthdayUniqueness: (firstName, lastName, dateOfBirth, excludeId = null) => {
+        const state = get();
+        return state.employees.some(emp => {
+            if (excludeId && emp.id === excludeId) return false;
+            
+            // Check if first name, last name, and birthday match
+            const empBirthday = emp.dateOfBirth ? new Date(emp.dateOfBirth).toDateString() : null;
+            const newBirthday = dateOfBirth ? new Date(dateOfBirth).toDateString() : null;
+            
+            return emp.firstName.toLowerCase() === firstName.toLowerCase() &&
+                   emp.lastName.toLowerCase() === lastName.toLowerCase() &&
+                   empBirthday === newBirthday;
+        });
+    },
+
+    // Check if email already exists
+    checkEmailUniqueness: (email, excludeId = null) => {
+        const state = get();
+        return state.employees.some(emp => {
+            if (excludeId && emp.id === excludeId) return false;
+            return emp.email.toLowerCase() === email.toLowerCase();
+        });
+    },
+
+    // Check if first name + last name combination already exists (without birthday)
+    checkNameUniqueness: (firstName, lastName, excludeId = null) => {
+        const state = get();
+        return state.employees.some(emp => {
+            if (excludeId && emp.id === excludeId) return false;
+            
+            return emp.firstName.toLowerCase() === firstName.toLowerCase() &&
+                   emp.lastName.toLowerCase() === lastName.toLowerCase();
+        });
     }
 }));
 

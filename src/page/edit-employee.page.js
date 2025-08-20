@@ -32,7 +32,8 @@ const employeeSchema = z.object({
         .min(1, 'position_required'),
     salary: z.number()
         .min(1, 'salary_min'),
-    dateOfEmployment: z.coerce.date().max(new Date(), 'date_future_error')
+    dateOfEmployment: z.coerce.date().max(new Date(), 'date_future_error'),
+    dateOfBirth: z.coerce.date().max(new Date(), 'date_future_error')
 });
 
 
@@ -48,7 +49,8 @@ export class EditEmployeePage extends LitElement {
             isLoading: { type: Boolean },
             isSubmitting: { type: Boolean },
             error: { type: String },
-            stateOfUpdateOfCreate: { type: String }
+            stateOfUpdateOfCreate: { type: String },
+            submitError: { type: String }
         };
     }
 
@@ -61,6 +63,7 @@ export class EditEmployeePage extends LitElement {
         this.isLoading = false;
         this.isSubmitting = false;
         this.error = '';
+        this.submitError = '';
         this.stateOfUpdateOfCreate = '';
         // Initialize TanStack Form
         this.form = new TanStackFormController(this, {
@@ -72,7 +75,8 @@ export class EditEmployeePage extends LitElement {
                 department: '',
                 position: '',
                 salary: 0,
-                dateOfEmployment: ''
+                dateOfEmployment: '',
+                dateOfBirth: ''
             },
             validators: {
                 onChange: employeeSchema,
@@ -84,6 +88,120 @@ export class EditEmployeePage extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         this.loadEmployee();
+    }
+
+    static get styles() {
+        return css`
+            :host {
+                display: block;
+                padding: 24px;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .edit-employee-container {
+                background: white;
+            }
+
+            .header {
+                padding: 20px 10px;
+                text-align: left;
+            }
+
+            .header-title {
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: #ff6303;
+                margin: 0;
+            }
+
+            .header p {
+                margin: 0;
+                color: #718096;
+                font-size: 16px;
+            }
+
+            form {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+                gap: 24px;
+                padding: 10px;
+            }
+
+            .form-actions {
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .error-message {
+                color: #721b1b;
+                font-size: 14px;
+                padding: 0;
+                margin: 0;
+            }
+
+            .loading-container,
+            .error-container,
+            .not-found-container {
+                text-align: center;
+                padding: 48px 24px;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                border: 4px solid #e2e8f0;
+                border-top: 4px solid #3b82f6;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 16px auto;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .error-container h2,
+            .not-found-container h2 {
+                color: #e53e3e;
+                margin-bottom: 16px;
+            }
+
+            .error-container p,
+            .not-found-container p {
+                color: #718096;
+                margin-bottom: 24px;
+            }
+
+            /* Responsive design */
+            @media (max-width: 768px) {
+                :host {
+                    padding: 16px;
+                }
+
+                .edit-employee-container {
+                    padding: 24px 16px;
+                }
+
+                .form-grid {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+                }
+
+                .form-actions {
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .form-actions app-button {
+                    width: 100%;
+                }
+            }
+        `;
     }
 
     async loadEmployee() {
@@ -119,6 +237,7 @@ export class EditEmployeePage extends LitElement {
             this.form.api.setFieldValue('position', this.employee.position);
             this.form.api.setFieldValue('salary', this.employee.salary);
             this.form.api.setFieldValue('dateOfEmployment', this.employee.dateOfEmployment.split('T')[0]);
+            this.form.api.setFieldValue('dateOfBirth', this.employee.dateOfBirth ? this.employee.dateOfBirth.split('T')[0] : '');
 
         } catch (error) {
             this.error = getMessage('failed_load_employee');
@@ -131,7 +250,18 @@ export class EditEmployeePage extends LitElement {
     async handleSubmit(e) {
         e.preventDefault();
 
+        this.submitError = '';
+        this.stateOfUpdateOfCreate = '';
+
         if (!this.form.api.state.canSubmit || !this.form.api.state.isDirty) {
+            return;
+        }
+
+        // Check uniqueness before proceeding
+        const uniquenessErrors = this.checkUniqueness(this.form.api.state.values);
+        if (uniquenessErrors.length > 0) {
+            this.submitError = uniquenessErrors.join(', ');
+            this.stateOfUpdateOfCreate = 'error';
             return;
         }
 
@@ -161,11 +291,21 @@ export class EditEmployeePage extends LitElement {
         try {
             const formData = this.form.api.state.values;
 
+            // Check uniqueness before updating
+            const uniquenessErrors = this.checkUniqueness(formData);
+            if (uniquenessErrors.length > 0) {
+                this.submitError = uniquenessErrors.join(', ');
+                this.stateOfUpdateOfCreate = 'error';
+                this.isSubmitting = false;
+                return;
+            }
+
             // Update employee in store
             store.getState().editEmployee(parseInt(this.employeeId), {
                 ...this.employee,
                 ...formData,
-                dateOfEmployment: new Date(formData.dateOfEmployment).toISOString()
+                dateOfEmployment: new Date(formData.dateOfEmployment).toISOString(),
+                dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : null
             });
 
             this.stateOfUpdateOfCreate = 'success';
@@ -183,6 +323,40 @@ export class EditEmployeePage extends LitElement {
 
     handleCancel() {
         Router.go('/');
+    }
+
+    // Check uniqueness of employee data
+    checkUniqueness(formData) {
+        const errors = [];
+
+        // Check first name + last name combination (without birthday)
+        if (store.getState().checkNameUniqueness(
+            formData.firstName,
+            formData.lastName,
+            this.employeeId === 'new' ? null : parseInt(this.employeeId)
+        )) {
+            errors.push(getMessage('first_name_last_name_exists'));
+        }
+
+        // Check first name + last name + birthday combination
+        if (store.getState().checkNameBirthdayUniqueness(
+            formData.firstName,
+            formData.lastName,
+            formData.dateOfBirth,
+            this.employeeId === 'new' ? null : parseInt(this.employeeId)
+        )) {
+            errors.push(getMessage('first_name_last_name_birthday_exists'));
+        }
+
+        // Check email uniqueness
+        if (store.getState().checkEmailUniqueness(
+            formData.email,
+            this.employeeId === 'new' ? null : parseInt(this.employeeId)
+        )) {
+            errors.push(getMessage('email_already_exists'));
+        }
+
+        return errors;
     }
 
     getError(field) {
@@ -237,7 +411,6 @@ export class EditEmployeePage extends LitElement {
 
             <div class="form-grid">
                 <form @submit=${this.handleSubmit} class="edit-form">
-
                         ${this.form.field(
             {
                 name: 'firstName',
@@ -472,18 +645,64 @@ export class EditEmployeePage extends LitElement {
                                 ></text-input>
                             `
         )}
+
+                        ${this.form.field(
+            {
+                name: 'dateOfBirth',
+                validators: {
+                    onBlur: ({ value }) => {
+                        if (!value) return getMessage('date_of_birth_required');
+                        const selectedDate = new Date(value);
+                        const today = new Date();
+                        if (selectedDate > today) {
+                            return getMessage('date_future_error');
+                        }
+
+                        // Check uniqueness with firstName and lastName if both are filled
+                        const firstName = this.form.api.getFieldValue('firstName');
+                        const lastName = this.form.api.getFieldValue('lastName');
+                        if (value && firstName && lastName) {
+                            if (store.getState().checkNameBirthdayUniqueness(
+                                firstName,
+                                lastName,
+                                value,
+                                this.employeeId === 'new' ? null : parseInt(this.employeeId)
+                            )) {
+                                return getMessage('first_name_last_name_birthday_exists');
+                            }
+                        }
+
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
+              <text-input
+                label="${getMessage('date_of_birth')}"
+                .value=${field.state.value}
+                .error=${this.getError(field)}
+                .required=${true}
+                name="dateOfBirth"
+                type="date"
+                .disabled=${this.isSubmitting}
+                @input=${(e) => field.handleChange(e.currentTarget.value)}
+              ></text-input>
+            `
+        )}
                     </div>
                 </div>
             </form>
         </div>
         <div class="form-actions" slot="footer">
+            ${this.submitError ? html`<p class="error-message">${this.submitError}</p>` : ''}
+            <div style="flex-grow: 1;"></div>
                         <app-button
                             label="${getMessage('cancel')}"
                             @click=${this.handleCancel}
                             variant="secondary"
                             .disabled=${this.isSubmitting}
                         ></app-button>
-                        
+                    
                         <app-button
                             label=${this.isSubmitting ? getMessage('updating') : this.employeeId === 'new' ? getMessage('create_employee') : getMessage('update_employee')}
                             @click=${this.handleSubmit}
@@ -492,7 +711,6 @@ export class EditEmployeePage extends LitElement {
                         ></app-button>
         </div>
     </card-component>
-    
     <edit-confirmation-modal
         @editConfirmed=${this.handleEditConfirmed}
          ${ref(this.editConfirmationModalRef)}
@@ -500,112 +718,7 @@ export class EditEmployeePage extends LitElement {
         `;
     }
 
-    static get styles() {
-        return css`
-            :host {
-                display: block;
-                padding: 24px;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
 
-            .edit-employee-container {
-                background: white;
-            }
-
-            .header {
-                padding: 20px 10px;
-                text-align: left;
-            }
-
-            .header-title {
-                font-size: 1.2rem;
-                font-weight: 600;
-                color: #ff6303;
-                margin: 0;
-            }
-
-            .header p {
-                margin: 0;
-                color: #718096;
-                font-size: 16px;
-            }
-
-            form {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-                gap: 24px;
-                padding: 10px;
-            }
-
-            .form-actions {
-                display: flex;
-                gap: 10px;
-                justify-content: flex-end;
-                align-items: center;
-                flex-wrap: wrap;
-            }
-
-            .loading-container,
-            .error-container,
-            .not-found-container {
-                text-align: center;
-                padding: 48px 24px;
-            }
-
-            .spinner {
-                width: 40px;
-                height: 40px;
-                border: 4px solid #e2e8f0;
-                border-top: 4px solid #3b82f6;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-                margin: 0 auto 16px auto;
-            }
-
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-
-            .error-container h2,
-            .not-found-container h2 {
-                color: #e53e3e;
-                margin-bottom: 16px;
-            }
-
-            .error-container p,
-            .not-found-container p {
-                color: #718096;
-                margin-bottom: 24px;
-            }
-
-            /* Responsive design */
-            @media (max-width: 768px) {
-                :host {
-                    padding: 16px;
-                }
-
-                .edit-employee-container {
-                    padding: 24px 16px;
-                }
-
-                .form-grid {
-                    grid-template-columns: 1fr;
-                    gap: 20px;
-                }
-
-                .form-actions {
-                    flex-direction: column;
-                    width: 100%;
-                }
-
-                .form-actions app-button {
-                    width: 100%;
-                }
-            }
-        `;
-    }
 }
 
 customElements.define('edit-employee-page', EditEmployeePage);

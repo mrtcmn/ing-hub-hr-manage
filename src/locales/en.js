@@ -97,5 +97,11 @@ export const messages = {
   'edit_employee_title': 'Edit Employee',
   'delete_employee_title': 'Delete Employee',
   'button': 'Button',
-  'confirm_edit_employee': 'Are you sure you want to update the information for {0}?'
+  'confirm_edit_employee': 'Are you sure you want to update the information for {0}?',
+  // Uniqueness validation messages
+  'first_name_last_name_birthday_exists': 'An employee with this first name, last name, and date of birth already exists',
+  'first_name_last_name_exists': 'An employee with this first name and last name already exists',
+  'email_already_exists': 'An employee with this email address already exists',
+  'enter_date_of_birth': 'Enter date of birth',
+  'date_of_birth_required': 'Date of birth is required'
 };
