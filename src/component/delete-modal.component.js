@@ -1,15 +1,14 @@
 import { LitElement, html, css } from 'lit';
 import '../component/card.component.js';
+import store from '../store/employee.store.js';
 
-/**
- * Delete Modal Component
- * Uses card component for content and provides overlay functionality
- */
 export class DeleteModalComponent extends LitElement {
   static properties = {
     isOpen: { type: Boolean, reflect: true },
     employeeName: { type: String },
-    employeeId: { type: String }
+    employeeId: { type: String },
+    isLoadingOnProceed: { type: Boolean },
+    employeeStore: { type: Object }
   };
 
   static styles = css`
@@ -95,8 +94,8 @@ export class DeleteModalComponent extends LitElement {
     .modal-actions {
       display: flex;
       flex-direction: row;
+      justify-content: flex-end;
       gap: 12px;
-      padding: 5px
     }
 
     .proceed-button {
@@ -174,6 +173,8 @@ export class DeleteModalComponent extends LitElement {
     this.isOpen = false;
     this.employeeName = '';
     this.employeeId = '';
+    this.isLoadingOnProceed = false;
+    this.employeeStore = store.getState()
   }
 
 
@@ -193,12 +194,18 @@ export class DeleteModalComponent extends LitElement {
   }
 
   handleProceed() {
-    this.dispatchEvent(new CustomEvent('deleteConfirmed', {
-      detail: { employeeId: this.employeeId },
-      bubbles: true,
-      composed: true
-    }));
-    this.close();
+
+    this.isLoadingOnProceed = true;
+    setTimeout(() => {
+      this.employeeStore.removeEmployee(this.employeeId);
+      this.isLoadingOnProceed = false;
+      this.dispatchEvent(new CustomEvent('deleteConfirmed', {
+        detail: { employeeId: this.employeeId },
+        bubbles: true,
+        composed: true
+      }));
+      this.close();
+    }, 2000);
   }
 
   handleCancel() {
@@ -236,16 +243,9 @@ export class DeleteModalComponent extends LitElement {
           </div>
           
           <div slot="footer" class="modal-actions">
-            <button 
-              class="proceed-button" 
-              @click=${this.handleProceed}>
-              Proceed
-            </button>
-            <button 
-              class="cancel-button" 
-              @click=${this.handleCancel}>
-              Cancel
-            </button>
+            <app-button label="Cancel" @click=${this.handleCancel}></app-button>
+            <app-button label="Proceed" @click=${this.handleProceed} variant="secondary" ?loading=${this.isLoadingOnProceed}></app-button>
+          
           </div>
         </card-component>
       </div>
