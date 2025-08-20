@@ -214,14 +214,17 @@ export class EmployeePage extends LitElement {
                     border: none;
                     border-bottom: 1px solid #dadada;
                     text-align: left;
+                    margin: 0 10px;
 
                     td {
                         text-align: center;
                         &:first-child {
                             text-align: left;
+                            padding-left: 20px;
                         }
                         &:last-child {
                             text-align: right;
+                            padding-right: 20px;
                         }
 
                     }

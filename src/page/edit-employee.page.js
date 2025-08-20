@@ -1,8 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { TanStackFormController } from '@tanstack/lit-form';
 import { z } from 'zod';
-import store, { DEPARTMENTS , POSITIONS} from '../store/employee.store.js';
-import { getMessage } from '../utils/localization.js';
+import store, { DEPARTMENTS, POSITIONS } from '../store/employee.store.js';
+import { getMessage, formatMessage } from '../utils/localization.js';
 import '../component/input.component.js';
 import { Router } from '@vaadin/router';
 
@@ -11,11 +11,11 @@ const employeeSchema = z.object({
     firstName: z.string()
         .min(2, 'first_name_min_length')
         .max(50, 'first_name_max_length')
-        .regex(/^[a-zA-Z\s]+$/, 'first_name_invalid_chars'),
+        .regex(/^[a-zA-ZÀ-ÿ\s]+$/, 'first_name_invalid_chars'),
     lastName: z.string()
         .min(2, 'last_name_min_length')
         .max(50, 'last_name_max_length')
-        .regex(/^[a-zA-Z\s]+$/, 'last_name_invalid_chars'),
+        .regex(/^[a-zA-ZÀ-ÿ\s]+$/, 'last_name_invalid_chars'),
     email: z
         .email('email_invalid')
         .min(5, 'email_min_length')
@@ -88,10 +88,10 @@ export class EditEmployeePage extends LitElement {
 
         if (this.employeeId === 'new') {
 
-          
+
             return;
         }
-        
+
         if (!this.employeeId) {
             this.error = getMessage('no_employee_id');
             return;
@@ -100,7 +100,7 @@ export class EditEmployeePage extends LitElement {
         this.isLoading = true;
         try {
             this.employee = store.getState().getEmployee(parseInt(this.employeeId));
-            
+
             if (!this.employee) {
                 this.error = getMessage('employee_not_found_error');
                 return;
@@ -115,7 +115,7 @@ export class EditEmployeePage extends LitElement {
             this.form.api.setFieldValue('position', this.employee.position);
             this.form.api.setFieldValue('salary', this.employee.salary);
             this.form.api.setFieldValue('dateOfEmployment', this.employee.dateOfEmployment.split('T')[0]);
-            
+
         } catch (error) {
             this.error = getMessage('failed_load_employee');
             console.error('Error loading employee:', error);
@@ -132,7 +132,7 @@ export class EditEmployeePage extends LitElement {
         }
 
         if (this.employeeId === 'new') {
-            
+
             this.isSubmitting = true;
             await fakeLoading(2000);
             store.getState().addEmployee(this.form.api.state.values);
@@ -147,7 +147,7 @@ export class EditEmployeePage extends LitElement {
         await fakeLoading(2000);
         try {
             const formData = this.form.api.state.values;
-            
+
             // Update employee in store
             store.getState().editEmployee(parseInt(this.employeeId), {
                 ...this.employee,
@@ -174,7 +174,7 @@ export class EditEmployeePage extends LitElement {
     }
 
     getError(field) {
-        return field.state.meta?.isDirty ? field.state.meta?.errors?.map(i=> getMessage(i?.message)).join(', ') : '';
+        return field.state.meta?.isDirty ? field.state.meta?.errors?.map(i => getMessage(i?.message)).join(', ') : '';
     }
 
     render() {
@@ -227,81 +227,83 @@ export class EditEmployeePage extends LitElement {
                 <form @submit=${this.handleSubmit} class="edit-form">
 
                         ${this.form.field(
-                            {
-                                name: 'firstName',
-                                validators: {
-                                    onChange: ({ value }) => {
-                                        if (!value || value.length < 2) {
-                                            return getMessage('first_name_min_length');
-                                        }
-                                        if (value.length > 50) {
-                                            return getMessage('first_name_max_length');
-                                        }
-                                        if (!/^[a-zA-Z\s]+$/.test(value)) {
-                                            return getMessage('first_name_invalid_chars');
-                                        }
-                                        return undefined;
-                                    }
-                                }
-                            },
-                            (field) => html`
+            {
+                name: 'firstName',
+                validators: {
+                    onChange: ({ value }) => {
+                        if (!value || value.length < 2) {
+                            return getMessage('first_name_min_length');
+                        }
+                        if (value.length > 50) {
+                            return getMessage('first_name_max_length');
+                        }
+                        if (!/^[a-zA-Z\s]+$/.test(value)) {
+                            return getMessage('first_name_invalid_chars');
+                        }
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
                                 <text-input
                                     label="${getMessage('first_name')}"
                                     .value=${field.state.value}
                                     .error=${this.getError(field)}
                                     .required=${true}
                                     name="firstName"
+                                    .disabled=${this.isSubmitting}
                                     placeholder="${getMessage('enter_first_name')}"
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
-                        )}
+        )}
 
                         ${this.form.field(
-                            {
-                                name: 'lastName',
-                                validators: {
-                                    onBlur: ({ value }) => {
-                                        if (!value || value.length < 2) {
-                                            return getMessage('last_name_min_length');
-                                        }
-                                        if (value.length > 50) {
-                                            return getMessage('last_name_max_length');
-                                        }
-                                        if (!/^[a-zA-Z\s]+$/.test(value)) {
-                                            return getMessage('last_name_invalid_chars');
-                                        }
-                                        return undefined;
-                                    }
-                                }
-                            },
-                            (field) => html`
+            {
+                name: 'lastName',
+                validators: {
+                    onBlur: ({ value }) => {
+                        if (!value || value.length < 2) {
+                            return getMessage('last_name_min_length');
+                        }
+                        if (value.length > 50) {
+                            return getMessage('last_name_max_length');
+                        }
+                        if (!/^[a-zA-Z\s]+$/.test(value)) {
+                            return getMessage('last_name_invalid_chars');
+                        }
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
                                 <text-input
                                     label="${getMessage('last_name')}"
                                     .value=${field.state.value}
                                     .error=${this.getError(field)}
                                     .required=${true}
                                     name="lastName"
+                                    .disabled=${this.isSubmitting}
                                     placeholder="${getMessage('enter_last_name')}"
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
-                        )}
+        )}
 
                         ${this.form.field(
-                            {
-                                name: 'email',
-                                validators: {
-                                    onBlur: ({ value }) => {
-                                        if (!value) return getMessage('email_required');
-                                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                                            return getMessage('email_invalid');
-                                        }
-                                        return undefined;
-                                    }
-                                }
-                            },
-                            (field) => html`
+            {
+                name: 'email',
+                validators: {
+                    onBlur: ({ value }) => {
+                        if (!value) return getMessage('email_required');
+                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                            return getMessage('email_invalid');
+                        }
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
                                 <text-input
                                     label="${getMessage('email')}"
                                     .value=${field.state.value}
@@ -309,109 +311,113 @@ export class EditEmployeePage extends LitElement {
                                     .required=${true}
                                     name="email"
                                     type="email"
+                                    .disabled=${this.isSubmitting}
                                     placeholder="${getMessage('enter_email_address')}"
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
-                        )}
+        )}
 
                         ${this.form.field(
-                            {
-                                name: 'phone',
-                                validators: {
-                                    onBlur: ({ value }) => {
-                                        if (!value) return getMessage('phone_required');
-                                        if (!/^[\d\s\-\+\(\)]+$/.test(value)) {
-                                            return getMessage('phone_invalid');
-                                        }
-                                        if (value.replace(/\D/g, '').length < 10) {
-                                            return getMessage('phone_min_length');
-                                        }
-                                        return undefined;
-                                    }
-                                }
-                            },
-                            (field) => html`
+            {
+                name: 'phone',
+                validators: {
+                    onBlur: ({ value }) => {
+                        if (!value) return getMessage('phone_required');
+                        if (!/^[\d\s\-\+\(\)]+$/.test(value)) {
+                            return getMessage('phone_invalid');
+                        }
+                        if (value.replace(/\D/g, '').length < 10) {
+                            return getMessage('phone_min_length');
+                        }
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
                                 <text-input
                                     label="${getMessage('phone')}"
                                     .value=${field.state.value}
                                     .error=${this.getError(field)}
                                     .required=${true}
                                     name="phone"
+                                    .disabled=${this.isSubmitting}
                                     placeholder="${getMessage('enter_phone_number')}"
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
-                        )}
+        )}
 
                         ${this.form.field(
-                            {
-                                name: 'department',
-                                validators: {
-                                    onBlur: ({ value }) => {
-                                        if (!value) return getMessage('department_required');
-                                        return undefined;
-                                    }
-                                }
-                            },
-                            (field) => html`
+            {
+                name: 'department',
+                validators: {
+                    onBlur: ({ value }) => {
+                        if (!value) return getMessage('department_required');
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
                                 <input-dropdown
                                     label="${getMessage('department')}"
                                     .value=${field.state.value}
                                     .error=${this.getError(field)}
                                     .required=${true}
                                     name="department"
+                                    .disabled=${this.isSubmitting}
                                     .options=${DEPARTMENTS.map(dept => ({
-                                        value: dept,
-                                        label: dept
-                                    }))}
+                value: dept,
+                label: dept
+            }))}
                                     @change=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></input-dropdown>
                             `
-                        )}
+        )}
 
                         ${this.form.field(
-                            {
-                                name: 'position',
-                                validators: {
-                                    onBlur: ({ value }) => {
-                                        if (!value) return getMessage('position_required');
-                                        return undefined;
-                                    }
-                                }
-                            },
-                            (field) => html`
+            {
+                name: 'position',
+                validators: {
+                    onBlur: ({ value }) => {
+                        if (!value) return getMessage('position_required');
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
                                 <input-dropdown
                                     label="${getMessage('position')}"
                                     .value=${field.state.value}
                                     .error=${this.getError(field)}
                                     .required=${true}
                                     name="position"
+                                    .disabled=${this.isSubmitting}
                                     .options=${POSITIONS.map(pos => ({
-                                        value: pos,
-                                        label: pos
-                                    }))}
+                value: pos,
+                label: pos
+            }))}
                                     @change=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></input-dropdown>
                             `
-                        )}
+        )}
 
                         ${this.form.field(
-                            {
-                                name: 'salary',
-                                validators: {
-                                    onBlur: ({ value }) => {
-                                        if (!value || value < 30000) {
-                                            return getMessage('salary_min');
-                                        }
-                                        if (value > 200000) {
-                                            return getMessage('salary_max');
-                                        }
-                                        return undefined;
-                                    }
-                                }
-                            },
-                            (field) => html`
+            {
+                name: 'salary',
+                validators: {
+                    onBlur: ({ value }) => {
+                        if (!value || value < 30000) {
+                            return getMessage('salary_min');
+                        }
+                        if (value > 200000) {
+                            return getMessage('salary_max');
+                        }
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
                                 <text-input
                                     label="${getMessage('salary')}"
                                     .value=${field.state.value}
@@ -419,28 +425,29 @@ export class EditEmployeePage extends LitElement {
                                     .required=${true}
                                     name="salary"
                                     type="number"
+                                    .disabled=${this.isSubmitting}
                                     placeholder="${getMessage('enter_salary')}"
                                     @input=${(e) => field.handleChange(parseInt(e.currentTarget.value) || 0)}
                                 ></text-input>
                             `
-                        )}
+        )}
 
                         ${this.form.field(
-                            {
-                                name: 'dateOfEmployment',
-                                validators: {
-                                    onBlur: ({ value }) => {
-                                        if (!value) return getMessage('date_required');
-                                        const selectedDate = new Date(value);
-                                        const today = new Date();
-                                        if (selectedDate > today) {
-                                            return getMessage('date_future_error');
-                                        }
-                                        return undefined;
-                                    }
-                                }
-                            },
-                            (field) => html`
+            {
+                name: 'dateOfEmployment',
+                validators: {
+                    onBlur: ({ value }) => {
+                        if (!value) return getMessage('date_required');
+                        const selectedDate = new Date(value);
+                        const today = new Date();
+                        if (selectedDate > today) {
+                            return getMessage('date_future_error');
+                        }
+                        return undefined;
+                    }
+                }
+            },
+            (field) => html`
                                 <text-input
                                     label="${getMessage('date_of_employment')}"
                                     .value=${field.state.value}
@@ -448,13 +455,12 @@ export class EditEmployeePage extends LitElement {
                                     .required=${true}
                                     name="dateOfEmployment"
                                     type="date"
+                                    .disabled=${this.isSubmitting}
                                     @input=${(e) => field.handleChange(e.currentTarget.value)}
                                 ></text-input>
                             `
-                        )}
+        )}
                     </div>
-
-                   
                 </div>
             </form>
         </div>
@@ -463,6 +469,7 @@ export class EditEmployeePage extends LitElement {
                             label="${getMessage('cancel')}"
                             @click=${this.handleCancel}
                             variant="secondary"
+                            .disabled=${this.isSubmitting}
                         ></app-button>
                         
                         <app-button
@@ -471,7 +478,7 @@ export class EditEmployeePage extends LitElement {
                             ?disabled=${!this.form.api.state.canSubmit || this.isSubmitting || !this.form.api.state.isDirty}
                             .loading=${this.isSubmitting}
                         ></app-button>
-                    </div>
+        </div>
     </card-component>
         `;
     }
