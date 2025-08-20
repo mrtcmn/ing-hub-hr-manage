@@ -540,6 +540,7 @@ export class Button extends LitElement {
         @click=${this._handleClick}
       >
         <div class="button-content">
+          <slot name="icon"></slot>
           ${this.loading ? html`<div class="spinner"></div>` : ''}
           <span>${this.label}</span>
         </div>

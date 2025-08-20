@@ -27,5 +27,9 @@ export const messages = {
   'success': 'Başarılı',
   'confirm_delete': 'Silmek istediğinizden emin misiniz?',
   'yes': 'Evet',
-  'no': 'Hayır'
+  'no': 'Hayır',
+  'list_view': 'Liste Görünümü',
+  'grid_view': 'Grid Görünümü',
+  'edit': 'Düzenle',
+  'delete': 'Sil'
 };

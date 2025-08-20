@@ -38,5 +38,9 @@ export const messages = {
   'success': 'Success',
   'confirm_delete': 'Are you sure you want to delete?',
   'yes': 'Yes',
-  'no': 'No'
+  'no': 'No',
+  'list_view': 'List View',
+  'grid_view': 'Grid View',
+  'edit': 'Edit',
+  'delete': 'Delete'
 };

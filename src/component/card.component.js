@@ -8,7 +8,8 @@ import { LitElement, html, css, unsafeCSS } from 'lit';
 export class CardComponent extends LitElement {
   static properties = {
     loading: { type: Boolean, reflect: true },
-    background: { type: String, reflect: true }
+    background: { type: String, reflect: true },
+    bodyHidden: { type: Boolean, reflect: true }
   };
 
   static styles = css`
@@ -87,6 +88,7 @@ export class CardComponent extends LitElement {
   constructor() {
     super();
     this.loading = false;
+    this.bodyHidden = false;
   }
 
   connectedCallback() {
@@ -103,7 +105,7 @@ export class CardComponent extends LitElement {
     return html`
       <div class="card-container">
         <slot name="header"></slot>
-        <div class="card-body">
+        <div class="card-body" ?hidden=${this.bodyHidden}>
           <slot name="body"></slot>
         </div>
         <div class="card-footer">
