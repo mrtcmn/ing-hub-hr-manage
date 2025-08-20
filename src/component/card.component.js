@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 
 
 /**
@@ -7,13 +7,14 @@ import { LitElement, html, css } from 'lit';
  */
 export class CardComponent extends LitElement {
   static properties = {
-    loading: { type: Boolean, reflect: true }
+    loading: { type: Boolean, reflect: true },
+    background: { type: String, reflect: true }
   };
 
   static styles = css`
     :host {
       display: block;
-      background: #eaeaea;
+      background: #f9f9f9d9;
       border-radius: 16px;
       box-shadow: var(--card-shadow, 0 2px 4px rgba(0, 0, 0, 0.1));
       overflow: hidden;
@@ -56,8 +57,12 @@ export class CardComponent extends LitElement {
       100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
 
+    .card-container {
+        background: ${unsafeCSS(this.background ?? 'inherit')};
+    }
+
     .card-body {
-      background: #eaeaea;
+      background: #f9f9f9d9;
       border-bottom-left-radius: 16px;
       border-bottom-right-radius: 16px;
       overflow: hidden;
@@ -73,7 +78,7 @@ export class CardComponent extends LitElement {
     }
 
     .card-footer {
-      background: #eaeaea;
+      background: #f9f9f9d9;
       padding: 0.5rem
     }
 
@@ -81,7 +86,6 @@ export class CardComponent extends LitElement {
 
   constructor() {
     super();
-    this.elevation = 1;
     this.loading = false;
   }
 
