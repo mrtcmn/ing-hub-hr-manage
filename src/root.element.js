@@ -7,6 +7,7 @@ import { setLocale } from './locales/en.js';
 import { setMessages, getMessage } from './utils/localization.js';
 import { messages as enMessages } from './locales/en.js';
 import './component/locale-picker.component.js';
+import './component/input.component.js';
 
 class RootElement extends LitElement {
 

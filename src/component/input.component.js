@@ -409,3 +409,156 @@ export class Dropdown extends LitElement {
 }
 
 customElements.define('input-dropdown', Dropdown);
+
+export class Button extends LitElement {
+    static get styles() {
+        return css`
+      :host {
+        display: inline-block;
+        --button-background: transparent;
+        --button-border-color: #404040;
+        --button-border-radius: 12px;
+        --button-border-width: 1px;
+        --button-padding: 5px 10px;
+        --button-font-size: 14px;
+        --button-font-weight: 500;
+        --button-color: #404040;
+        --button-hover-background: rgba(59, 130, 246, 0.05);
+        --button-hover-border-color: #404040;
+        --button-hover-color: #404040;
+        --button-disabled-background: #f7fafc;
+        --button-disabled-border-color: #e2e8f0;
+        --button-disabled-color: #a0aec0;
+        --button-loading-color: #a0aec0;
+        --button-transition: all 0.2s ease-in-out;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        background: var(--button-background);
+        border: var(--button-border-width) solid var(--button-border-color);
+        border-radius: var(--button-border-radius);
+        padding: var(--button-padding);
+        font-size: var(--button-font-size);
+        font-family: var(--button-font-family);
+        font-weight: var(--button-font-weight);
+        color: var(--button-color);
+        text-decoration: none;
+        cursor: pointer;
+        transition: var(--button-transition);
+        outline: none;
+        user-select: none;
+        white-space: nowrap;
+
+        &.secondary {
+          border-color: #ff6303;
+          color: #ff6303;
+        }
+
+        &.secondary:hover {
+          background: #ff6303 !important;
+          color: white !important;
+          border-color: #ff6303 !important;
+        }
+      }
+
+      .button:hover:not(:disabled):not(.loading) {
+        background: var(--button-hover-background);
+        border-color: var(--button-hover-border-color);
+        color: var(--button-hover-color);
+      }
+
+      .button:active:not(:disabled):not(.loading) {
+        transform: translateY(1px);
+      }
+
+      .button:disabled,
+      .button.loading {
+        background: var(--button-disabled-background);
+        border-color: var(--button-disabled-border-color);
+        color: var(--button-disabled-color);
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .button.loading {
+        color: var(--button-loading-color);
+      }
+
+      .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid transparent;
+        border-top: 2px solid currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .button-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    `;
+    }
+
+    static get properties() {
+        return {
+            label: { type: String },
+            disabled: { type: Boolean },
+            loading: { type: Boolean },
+            type: { type: String },
+            variant: { type: String }
+        };
+    }
+
+    constructor() {
+        super();
+        this.label = 'Button';
+        this.disabled = false;
+        this.loading = false;
+        this.type = 'button';
+        this.variant = 'primary';
+    }
+
+    render() {
+        return html`
+      <button
+        class="button ${this.loading ? 'loading' : ''} ${this.variant}"
+        type="${this.type}"
+        ?disabled=${this.disabled || this.loading}
+        @click=${this._handleClick}
+      >
+        <div class="button-content">
+          ${this.loading ? html`<div class="spinner"></div>` : ''}
+          <span>${this.label}</span>
+        </div>
+      </button>
+    `;
+    }
+
+    _handleClick(e) {
+        if (this.disabled || this.loading) {
+            e.preventDefault();
+            return;
+        }
+
+        this.dispatchEvent(new CustomEvent('click', {
+            detail: { event: e },
+            bubbles: true,
+            composed: true
+        }));
+    }
+}
+
+customElements.define('app-button', Button);
