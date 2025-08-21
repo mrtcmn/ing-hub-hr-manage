@@ -5,17 +5,22 @@ import './page/edit-employee.page.js';
 import './component/navbar.component.js';
 import { Router } from '@vaadin/router';
 import { setLocale } from './locales/en.js';
+import { updateWhenLocaleChanges } from '@lit/localize';
 import { setMessages, getMessage } from './utils/localization.js';
 import { messages as enMessages } from './locales/en.js';
 import './component/locale-picker.component.js';
 import './component/input.component.js';
 
+window.addEventListener('vaadin-router-location-changed', e => {
+    window.scrollTo(0, 0);
+});
 class RootElement extends LitElement {
 
     constructor() {
         super();
         this.currentLocale = 'en';
         this.setupLocalization();
+        updateWhenLocaleChanges(this);
     }
 
     async setupLocalization() {
@@ -30,6 +35,7 @@ class RootElement extends LitElement {
             }
         });
     }
+    
 
     async changeLocale(event) {
         if (!event?.detail?.locale) {
@@ -61,6 +67,8 @@ class RootElement extends LitElement {
         router.setRoutes([
             { path: '/', component: 'employee-page' },
             { path: '/edit-employee', component: 'edit-employee-page' },
+            { path: '/new-employee', component: 'edit-employee-page' },
+
         ]);
     }
 
@@ -197,10 +205,10 @@ class RootElement extends LitElement {
                     <div class="grow"></div>
                     <section class="nav-links">
                         <a href="/">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-ordered-icon lucide-list-ordered"><path d="M10 12h11"/><path d="M10 18h11"/><path d="M10 6h11"/><path d="M4 10h2"/><path d="M4 6h1v4"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
                             <span>${getMessage('employee_list')}</span>
                         </a>
-                        <a href="/edit-employee?id=new">
+                        <a href="/new-employee?id=new">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-plus-icon lucide-user-round-plus"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>
                             <span>${getMessage('add_employee')}</span>
                         </a>

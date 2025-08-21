@@ -1,7 +1,7 @@
 import { createStore } from 'zustand/vanilla';
 
-export const DEPARTMENTS = ['Analytics', 'Tech', 'Marketing', 'Sales', 'HR'];
-export const POSITIONS = ['Junior', 'Medior', 'Senior', 'Lead', 'Manager'];
+export const DEPARTMENTS = ['Analytics', 'Tech'];
+export const POSITIONS = ['Junior', 'Medior', 'Senior'];
 
 const store = createStore((set, get) => ({
     employees: [
@@ -23,7 +23,7 @@ const store = createStore((set, get) => ({
             email: 'jane.smith@example.com',
             phone: '0987654321',
             department: 'Tech',
-            position: 'Lead',
+            position: 'Senior',
             dateOfEmployment: '2021-06-20T00:00:00.000Z',
             dateOfBirth: '1988-07-22T00:00:00.000Z'
         },
@@ -33,7 +33,7 @@ const store = createStore((set, get) => ({
             lastName: 'Johnson',
             email: 'mike.johnson@example.com',
             phone: '5551234567',
-            department: 'Marketing',
+            department: 'Tech',
             position: 'Medior',
             dateOfEmployment: '2023-03-10T00:00:00.000Z',
             dateOfBirth: '1990-11-08T00:00:00.000Z'
@@ -44,7 +44,7 @@ const store = createStore((set, get) => ({
             lastName: 'Wilson',
             email: 'sarah.wilson@example.com',
             phone: '5559876543',
-            department: 'Sales',
+            department: 'Analytics',
             position: 'Senior',
             dateOfEmployment: '2022-08-15T00:00:00.000Z',
             dateOfBirth: '1987-04-12T00:00:00.000Z'
@@ -66,7 +66,7 @@ const store = createStore((set, get) => ({
             lastName: 'Davis',
             email: 'emily.davis@example.com',
             phone: '5557890123',
-            department: 'HR',
+            department: 'Tech',
             position: 'Medior',
             dateOfEmployment: '2022-11-20T00:00:00.000Z',
             dateOfBirth: '1992-01-30T00:00:00.000Z'
@@ -78,7 +78,7 @@ const store = createStore((set, get) => ({
             email: 'robert.taylor@example.com',
             phone: '5553210987',
             department: 'Analytics',
-            position: 'Lead',
+            position: 'Senior',
             dateOfEmployment: '2021-12-10T00:00:00.000Z',
             dateOfBirth: '1983-12-05T00:00:00.000Z'
         },
@@ -88,8 +88,8 @@ const store = createStore((set, get) => ({
             lastName: 'Anderson',
             email: 'lisa.anderson@example.com',
             phone: '5556543210',
-            department: 'Marketing',
-            position: 'Manager',
+            department: 'Tech',
+            position: 'Senior',
             dateOfEmployment: '2020-05-15T00:00:00.000Z',
             dateOfBirth: '1980-06-18T00:00:00.000Z'
         },
@@ -99,109 +99,109 @@ const store = createStore((set, get) => ({
             lastName: 'Martinez',
             email: 'james.martinez@example.com',
             phone: '5550123456',
-            department: 'Sales',
+            department: 'Analytics',
             position: 'Junior',
-            dateOfEmployment: '2023-06-01T00:00:00.000Z',
-            dateOfBirth: '1997-02-14T00:00:00.000Z'
+            dateOfEmployment: '2023-01-15T00:00:00.000Z',
+            dateOfBirth: '1993-08-14T00:00:00.000Z'
         },
         {
             id: 10,
             firstName: 'Amanda',
-            lastName: 'Garcia',
-            email: 'amanda.garcia@example.com',
-            phone: '5552345678',
+            lastName: 'Thompson',
+            email: 'amanda.thompson@example.com',
+            phone: '5551234567',
             department: 'Tech',
-            position: 'Senior',
-            dateOfEmployment: '2022-03-20T00:00:00.000Z',
-            dateOfBirth: '1986-10-03T00:00:00.000Z'
+            position: 'Medior',
+            dateOfEmployment: '2022-04-20T00:00:00.000Z',
+            dateOfBirth: '1989-05-25T00:00:00.000Z'
         },
         {
             id: 11,
             firstName: 'Christopher',
             lastName: 'Lee',
             email: 'christopher.lee@example.com',
-            phone: '5558765432',
+            phone: '5552345678',
             department: 'Analytics',
-            position: 'Medior',
-            dateOfEmployment: '2023-01-10T00:00:00.000Z',
-            dateOfBirth: '1991-05-20T00:00:00.000Z'
+            position: 'Senior',
+            dateOfEmployment: '2021-09-10T00:00:00.000Z',
+            dateOfBirth: '1984-11-30T00:00:00.000Z'
         },
         {
             id: 12,
             firstName: 'Jessica',
-            lastName: 'Rodriguez',
-            email: 'jessica.rodriguez@example.com',
+            lastName: 'White',
+            email: 'jessica.white@example.com',
             phone: '5553456789',
-            department: 'HR',
-            position: 'Senior',
-            dateOfEmployment: '2021-09-05T00:00:00.000Z',
-            dateOfBirth: '1989-08-27T00:00:00.000Z'
+            department: 'Tech',
+            position: 'Junior',
+            dateOfEmployment: '2023-02-28T00:00:00.000Z',
+            dateOfBirth: '1996-03-12T00:00:00.000Z'
         },
         {
             id: 13,
             firstName: 'Michael',
-            lastName: 'White',
-            email: 'michael.white@example.com',
-            phone: '5555678901',
-            department: 'Marketing',
-            position: 'Junior',
-            dateOfEmployment: '2023-07-15T00:00:00.000Z',
-            dateOfBirth: '1996-03-11T00:00:00.000Z'
+            lastName: 'Harris',
+            email: 'michael.harris@example.com',
+            phone: '5554567890',
+            department: 'Analytics',
+            position: 'Medior',
+            dateOfEmployment: '2022-07-05T00:00:00.000Z',
+            dateOfBirth: '1991-07-18T00:00:00.000Z'
         },
         {
             id: 14,
-            firstName: 'Ashley',
-            lastName: 'Thompson',
-            email: 'ashley.thompson@example.com',
-            phone: '5556789012',
-            department: 'Sales',
-            position: 'Medior',
-            dateOfEmployment: '2022-12-01T00:00:00.000Z',
-            dateOfBirth: '1993-07-09T00:00:00.000Z'
+            firstName: 'Nicole',
+            lastName: 'Clark',
+            email: 'nicole.clark@example.com',
+            phone: '5555678901',
+            department: 'Tech',
+            position: 'Senior',
+            dateOfEmployment: '2020-11-15T00:00:00.000Z',
+            dateOfBirth: '1982-12-03T00:00:00.000Z'
         },
         {
             id: 15,
             firstName: 'Daniel',
-            lastName: 'Clark',
-            email: 'daniel.clark@example.com',
-            phone: '5557890123',
-            department: 'Tech',
-            position: 'Lead',
-            dateOfEmployment: '2021-04-20T00:00:00.000Z',
-            dateOfBirth: '1984-11-16T00:00:00.000Z'
+            lastName: 'Lewis',
+            email: 'daniel.lewis@example.com',
+            phone: '5556789012',
+            department: 'Analytics',
+            position: 'Junior',
+            dateOfEmployment: '2023-05-20T00:00:00.000Z',
+            dateOfBirth: '1997-01-08T00:00:00.000Z'
         },
         {
             id: 16,
-            firstName: 'Nicole',
-            lastName: 'Lewis',
-            email: 'nicole.lewis@example.com',
-            phone: '5558901234',
-            department: 'Analytics',
-            position: 'Junior',
-            dateOfEmployment: '2023-10-01T00:00:00.000Z',
-            dateOfBirth: '1998-01-05T00:00:00.000Z'
+            firstName: 'Rachel',
+            lastName: 'Walker',
+            email: 'rachel.walker@example.com',
+            phone: '5557890123',
+            department: 'Tech',
+            position: 'Medior',
+            dateOfEmployment: '2022-03-12T00:00:00.000Z',
+            dateOfBirth: '1990-06-22T00:00:00.000Z'
         },
         {
             id: 17,
             firstName: 'Kevin',
             lastName: 'Hall',
             email: 'kevin.hall@example.com',
-            phone: '5559012345',
-            department: 'Marketing',
+            phone: '5558901234',
+            department: 'Analytics',
             position: 'Senior',
-            dateOfEmployment: '2022-06-15T00:00:00.000Z',
-            dateOfBirth: '1988-12-22T00:00:00.000Z'
+            dateOfEmployment: '2021-08-08T00:00:00.000Z',
+            dateOfBirth: '1986-04-15T00:00:00.000Z'
         },
         {
             id: 18,
-            firstName: 'Rachel',
+            firstName: 'Michelle',
             lastName: 'Young',
-            email: 'rachel.young@example.com',
-            phone: '5550123456',
-            department: 'HR',
+            email: 'michelle.young@example.com',
+            phone: '5559012345',
+            department: 'Tech',
             position: 'Junior',
-            dateOfEmployment: '2023-11-01T00:00:00.000Z',
-            dateOfBirth: '1999-04-08T00:00:00.000Z'
+            dateOfEmployment: '2023-06-30T00:00:00.000Z',
+            dateOfBirth: '1994-10-11T00:00:00.000Z'
         },
         {
             id: 19,
@@ -209,8 +209,8 @@ const store = createStore((set, get) => ({
             lastName: 'King',
             email: 'steven.king@example.com',
             phone: '5551234567',
-            department: 'Sales',
-            position: 'Manager',
+            department: 'Tech',
+            position: 'Senior',
             dateOfEmployment: '2020-08-10T00:00:00.000Z',
             dateOfBirth: '1978-09-30T00:00:00.000Z'
         },
@@ -242,20 +242,26 @@ const store = createStore((set, get) => ({
             lastName: 'Baker',
             email: 'stephanie.baker@example.com',
             phone: '5554567890',
-            department: 'Marketing',
-            position: 'Lead',
+            department: 'Tech',
+            position: 'Senior',
             dateOfEmployment: '2020-12-01T00:00:00.000Z',
             dateOfBirth: '1981-01-12T00:00:00.000Z'
         }
     ],
 
-    addEmployee: (newEmployee) => set(state => ({
-        employees: [...state.employees, { 
-            ...newEmployee, 
-            id: Date.now(),
-            dateOfBirth: newEmployee.dateOfBirth ? new Date(newEmployee.dateOfBirth).toISOString() : null
-        }]
-    })),
+    addEmployee: (newEmployee) => set(state => {
+        // Find the highest existing ID and increment by 1
+        const maxId = Math.max(...state.employees.map(emp => emp.id), 0);
+        const newId = maxId + 1;
+        
+        return {
+            employees: [...state.employees, { 
+                ...newEmployee, 
+                id: newId,
+                dateOfBirth: newEmployee.dateOfBirth ? new Date(newEmployee.dateOfBirth).toISOString() : null
+            }]
+        };
+    }),
 
     removeEmployee: (id) => set(state => ({
         employees: state.employees.filter(emp => emp.id !== id)
