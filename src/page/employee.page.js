@@ -6,6 +6,7 @@ import { getMessage, formatMessage } from '../utils/localization.js';
 import '../component/card.component.js';
 import '../component/delete-modal.component.js';
 import { ref, createRef } from 'lit/directives/ref.js';
+import { updateWhenLocaleChanges } from '@lit/localize';
 
 
 export class EmployeePage extends LitElement {
@@ -17,8 +18,8 @@ export class EmployeePage extends LitElement {
             isDeleteModalOpen: { type: Boolean },
             employeeName: { type: String },
             employeeId: { type: String },
-            viewMode: { type: String }, // 'list' or 'grid'
-            searchQuery: { type: String } // Add search query property
+            viewMode: { type: String },
+            searchQuery: { type: String }
         };
     }
 
@@ -26,11 +27,12 @@ export class EmployeePage extends LitElement {
 
     constructor() {
         super();
+        updateWhenLocaleChanges(this);
         this.employees = store.getState().employees;
         this.currentPage = 1;
-        this.itemsPerPage = 20;
-        this.viewMode = 'list'; // Default to list view
-        this._searchQuery = ''; // Initialize private search query
+        this.itemsPerPage = 10;
+        this.viewMode = 'list'; 
+        this._searchQuery = '';
 
         this.isDeleteModalOpen = false;
         this.employeeName = '';
@@ -65,7 +67,6 @@ export class EmployeePage extends LitElement {
         });
     }
 
-    // Normalize Turkish characters for case-insensitive search
     normalizeTurkishText(text) {
         return text
             .replace(/[çÇ]/g, 'c')
@@ -76,22 +77,18 @@ export class EmployeePage extends LitElement {
             .replace(/[üÜ]/g, 'u');
     }
 
-    // Handle search input changes
     handleSearchInput(event) {
         this.searchQuery = event.target.value;
     }
 
-    // Clear search
     clearSearch() {
         this.searchQuery = '';
     }
 
-    // Setter for searchQuery to automatically reset pagination
     set searchQuery(value) {
         const oldValue = this._searchQuery;
         this._searchQuery = value;
         
-        // Reset to first page when search query changes
         if (oldValue !== value) {
             this.currentPage = 1;
         }
@@ -99,12 +96,10 @@ export class EmployeePage extends LitElement {
         this.requestUpdate('searchQuery', oldValue);
     }
 
-    // Getter for searchQuery
     get searchQuery() {
         return this._searchQuery || '';
     }
 
-    // Pagination methods - now use filteredEmployees instead of employees
     get totalPages() {
         return Math.ceil(this.filteredEmployees.length / this.itemsPerPage);
     }
@@ -141,12 +136,10 @@ export class EmployeePage extends LitElement {
         }
     }
 
-    // View mode toggle
     toggleViewMode() {
         this.viewMode = this.viewMode === 'list' ? 'grid' : 'list';
     }
 
-    // Store action methods
     addEmployee(employee) {
         store.getState().addEmployee(employee);
     }
@@ -901,13 +894,6 @@ export class EmployeePage extends LitElement {
                     ` : ''}
                 </div>
 
-                <!-- Search Results Info -->
-                ${this.searchQuery && this.filteredEmployees.length !== this.employees.length ? html`
-                    <div class="search-results-info">
-                        ${formatMessage(getMessage('search_results_info') || 'Found {0} of {1} employees', this.filteredEmployees.length, this.employees.length)}
-                    </div>
-                ` : ''}
-                
                 ${this.filteredEmployees.length === 0
                 ? html`<card-component><div slot="body" class="no-employees">
                     ${this.searchQuery 
@@ -932,7 +918,6 @@ export class EmployeePage extends LitElement {
         let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
         let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
 
-        // Adjust start page if we're near the end
         if (endPage - startPage + 1 < maxVisiblePages) {
             startPage = Math.max(1, endPage - maxVisiblePages + 1);
         }

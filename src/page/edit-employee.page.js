@@ -7,6 +7,7 @@ import '../component/input.component.js';
 import '../component/edit-confirmation-modal.component.js';
 import { Router } from '@vaadin/router';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { updateWhenLocaleChanges } from '@lit/localize';
 
 // Employee validation schema using Zod
 const employeeSchema = z.object({
@@ -32,7 +33,9 @@ const employeeSchema = z.object({
         .min(1, 'position_required'),
 
     dateOfEmployment: z.coerce.date().max(new Date(), 'date_future_error'),
-    dateOfBirth: z.coerce.date().max(new Date(), 'date_future_error')
+    dateOfBirth: z.coerce.date()
+        .max(new Date(), 'date_of_birth_future_error')
+        .min(new Date('1925-01-01'), 'date_of_birth_too_old')
 });
 
 
@@ -57,6 +60,7 @@ export class EditEmployeePage extends LitElement {
 
     constructor() {
         super();
+        updateWhenLocaleChanges(this);
         this.employeeId = '';
         this.employee = null;
         this.isLoading = false;
@@ -122,7 +126,7 @@ export class EditEmployeePage extends LitElement {
 
             form {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
                 gap: 24px;
                 padding: 10px;
             }
@@ -409,7 +413,7 @@ export class EditEmployeePage extends LitElement {
                 </div>
 
             <div class="form-grid">
-                <form @submit=${this.handleSubmit} class="edit-form">
+                <form class="edit-form">
                         ${this.form.field(
             {
                 name: 'firstName'
