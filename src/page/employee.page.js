@@ -182,16 +182,17 @@ export class EmployeePage extends LitElement {
         }
 
         .search-container {
+            position: relative;
             display: flex;
-            gap: 10px;
             align-items: center;
             margin-bottom: 10px;
+            max-width: 400px;
         }
 
         .search-input {
             flex: 1;
-            max-width: 400px;
-            padding: 12px 16px;
+            width: 100%;
+            padding: 12px 40px 12px 16px;
             border: 2px solid #e9ecef;
             border-radius: 8px;
             font-size: 1rem;
@@ -210,19 +211,29 @@ export class EmployeePage extends LitElement {
         }
 
         .clear-search-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
             background: #6c757d;
             color: white;
             border: none;
-            padding: 12px 16px;
-            border-radius: 8px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-            white-space: nowrap;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
 
         .clear-search-btn:hover {
             background: #5a6268;
+            transform: translateY(-50%) scale(1.1);
         }
 
         .search-results-info {
@@ -284,8 +295,7 @@ export class EmployeePage extends LitElement {
             }
 
             .search-container {
-                flex-direction: column;
-                align-items: stretch;
+                max-width: none;
             }
 
             .search-input {
@@ -626,17 +636,19 @@ export class EmployeePage extends LitElement {
             }
 
             .search-container {
-                gap: 8px;
+                max-width: none;
             }
 
             .search-input {
-                padding: 10px 12px;
+                padding: 10px 35px 10px 12px;
                 font-size: 0.9rem;
             }
 
             .clear-search-btn {
-                padding: 10px 12px;
-                font-size: 0.8rem;
+                width: 18px;
+                height: 18px;
+                font-size: 12px;
+                right: 8px;
             }
         }
     `;
@@ -889,7 +901,7 @@ export class EmployeePage extends LitElement {
                             class="clear-search-btn" 
                             @click=${this.clearSearch}
                             title="${getMessage('clear_search') || 'Clear search'}">
-                            ${getMessage('clear_search') || 'Clear'}
+                            ×
                         </button>
                     ` : ''}
                 </div>

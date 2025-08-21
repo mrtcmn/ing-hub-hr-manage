@@ -124,7 +124,7 @@ export class EditEmployeePage extends LitElement {
                 font-size: 16px;
             }
 
-            form {
+            .edit-form {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
                 gap: 24px;
@@ -251,15 +251,14 @@ export class EditEmployeePage extends LitElement {
     }
 
     async handleSubmit(e) {
+        if (this.isSubmitting || !this.form.api.state.canSubmit || !this.form.api.state.isDirty) {
+            return;
+        }
+
         e.preventDefault();
 
         this.submitError = '';
         this.stateOfUpdateOfCreate = '';
-
-        if (!this.form.api.state.canSubmit || !this.form.api.state.isDirty) {
-            return;
-        }
-
         // Check uniqueness before proceeding
         const uniquenessErrors = this.checkUniqueness(this.form.api.state.values);
         if (uniquenessErrors.length > 0) {
@@ -413,7 +412,7 @@ export class EditEmployeePage extends LitElement {
                 </div>
 
             <div class="form-grid">
-                <form class="edit-form">
+                <div class="edit-form">
                         ${this.form.field(
             {
                 name: 'firstName'
@@ -568,7 +567,7 @@ export class EditEmployeePage extends LitElement {
         )}
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="form-actions" slot="footer">
             ${this.submitError ? html`<p class="error-message">${this.submitError}</p>` : ''}

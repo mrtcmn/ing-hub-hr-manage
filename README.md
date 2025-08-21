@@ -13,3 +13,7 @@ A modern, responsive HR management application built with cutting-edge web techn
 - **Routing:** [Vaadin Router](https://vaadin.com/router) - Client-side routing
 - **Build Tool:** Rollup with Web Dev Server
 - **Internationalization:** Lit Localize
+
+## Code Coverage
+
+Code coverage: 89.27 %

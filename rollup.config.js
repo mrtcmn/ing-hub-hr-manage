@@ -26,6 +26,10 @@ export default {
     copy({
       patterns: ['public/**/*'],
     }),
+    copy({
+      patterns: ['locales/**/*'],
+      rootDir: 'src',
+    }),
   ],
   output: {
     dir: 'build',

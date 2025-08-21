@@ -63,6 +63,14 @@ export class CardComponent extends LitElement {
         background: ${unsafeCSS(this.background ?? 'inherit')};
     }
 
+    .card-container.success {
+      background: #ebfae8d9;
+    }
+
+    .card-container.error {
+      background: #fbeced;
+    }
+
     .card-body {
       background: #f9f9f9d9;
       border-bottom-left-radius: 16px;
@@ -114,7 +122,7 @@ export class CardComponent extends LitElement {
 
   render() {
     return html`
-      <div class="card-container">
+      <div class="card-container ${this.statusOfBottomBar}">
         <slot name="header"></slot>
         <div class="card-body" ?hidden=${this.bodyHidden}>
           <slot name="body"></slot>
