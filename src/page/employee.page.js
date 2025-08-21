@@ -17,7 +17,8 @@ export class EmployeePage extends LitElement {
             isDeleteModalOpen: { type: Boolean },
             employeeName: { type: String },
             employeeId: { type: String },
-            viewMode: { type: String } // 'list' or 'grid'
+            viewMode: { type: String }, // 'list' or 'grid'
+            searchQuery: { type: String } // Add search query property
         };
     }
 
@@ -29,6 +30,7 @@ export class EmployeePage extends LitElement {
         this.currentPage = 1;
         this.itemsPerPage = 20;
         this.viewMode = 'list'; // Default to list view
+        this._searchQuery = ''; // Initialize private search query
 
         this.isDeleteModalOpen = false;
         this.employeeName = '';
@@ -40,15 +42,77 @@ export class EmployeePage extends LitElement {
         });
     }
 
-    // Pagination methods
+    // Search functionality
+    get filteredEmployees() {
+        if (!this._searchQuery?.trim()) {
+            return this.employees;
+        }
+
+        const query = this.normalizeTurkishText(this._searchQuery.trim().toLowerCase());
+        
+        return this.employees.filter(employee => {
+            const firstName = this.normalizeTurkishText(employee.firstName?.toLowerCase() || '');
+            const lastName = this.normalizeTurkishText(employee.lastName?.toLowerCase() || '');
+            const fullName = `${firstName} ${lastName}`.trim();
+            const phone = this.normalizeTurkishText(employee.phone?.toLowerCase() || '');
+            const email = this.normalizeTurkishText(employee.email?.toLowerCase() || '');
+
+            return firstName.includes(query) ||
+                   lastName.includes(query) ||
+                   fullName.includes(query) ||
+                   phone.includes(query) ||
+                   email.includes(query);
+        });
+    }
+
+    // Normalize Turkish characters for case-insensitive search
+    normalizeTurkishText(text) {
+        return text
+            .replace(/[çÇ]/g, 'c')
+            .replace(/[ğĞ]/g, 'g')
+            .replace(/[ıİ]/g, 'i')
+            .replace(/[öÖ]/g, 'o')
+            .replace(/[şŞ]/g, 's')
+            .replace(/[üÜ]/g, 'u');
+    }
+
+    // Handle search input changes
+    handleSearchInput(event) {
+        this.searchQuery = event.target.value;
+    }
+
+    // Clear search
+    clearSearch() {
+        this.searchQuery = '';
+    }
+
+    // Setter for searchQuery to automatically reset pagination
+    set searchQuery(value) {
+        const oldValue = this._searchQuery;
+        this._searchQuery = value;
+        
+        // Reset to first page when search query changes
+        if (oldValue !== value) {
+            this.currentPage = 1;
+        }
+        
+        this.requestUpdate('searchQuery', oldValue);
+    }
+
+    // Getter for searchQuery
+    get searchQuery() {
+        return this._searchQuery || '';
+    }
+
+    // Pagination methods - now use filteredEmployees instead of employees
     get totalPages() {
-        return Math.ceil(this.employees.length / this.itemsPerPage);
+        return Math.ceil(this.filteredEmployees.length / this.itemsPerPage);
     }
 
     get paginatedEmployees() {
         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         const endIndex = startIndex + this.itemsPerPage;
-        return this.employees.slice(startIndex, endIndex);
+        return this.filteredEmployees.slice(startIndex, endIndex);
     }
 
     goToPage(page) {
@@ -121,7 +185,62 @@ export class EmployeePage extends LitElement {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ff6303;
+            box-shadow: 0 0 0 3px rgba(255, 99, 3, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #6c757d;
+        }
+
+        .clear-search-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .clear-search-btn:hover {
+            background: #5a6268;
+        }
+
+        .search-results-info {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
         }
 
         .view-toggle {
@@ -169,6 +288,15 @@ export class EmployeePage extends LitElement {
         @media (max-width: 768px) {
             .page-title {
                 font-size: 0.9rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                max-width: none;
             }
         }
 
@@ -254,8 +382,8 @@ export class EmployeePage extends LitElement {
                 tbody {
                     tr {
                         td {
-                            padding: 2px !important;
-
+                            padding: 2px 10px !important;
+                            text-align: left !important;
                             &:first-child {
                                 padding-left: 10px !important;
                             }
@@ -503,6 +631,20 @@ export class EmployeePage extends LitElement {
                 padding: 6px 10px;
                 font-size: 0.8rem;
             }
+
+            .search-container {
+                gap: 8px;
+            }
+
+            .search-input {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .clear-search-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
         }
     `;
 
@@ -607,6 +749,7 @@ export class EmployeePage extends LitElement {
                             <th>${getMessage('first_name')}</th>
                             <th>${getMessage('last_name')}</th>
                             <th>${getMessage('date_of_employment')}</th>
+                            <th>${getMessage('date_of_birth')}</th>
                             <th>${getMessage('phone')}</th>
                             <th>${getMessage('email')}</th>
                             <th>${getMessage('department')}</th>
@@ -620,6 +763,7 @@ export class EmployeePage extends LitElement {
                             <td>${employee.firstName}</td>
                             <td>${employee.lastName}</td>
                             <td>${employee.dateOfEmployment ? format(new Date(employee.dateOfEmployment), 'yyyy/MM/dd') : ''}</td>
+                            <td>${employee.dateOfBirth ? format(new Date(employee.dateOfBirth), 'yyyy/MM/dd') : ''}</td>
                             <td>${employee.phone || ''}</td>
                             <td>${employee.email || ''}</td>
                             <td>${employee.department || ''}</td>
@@ -638,7 +782,7 @@ export class EmployeePage extends LitElement {
                                             <path d="M14 11v6"/>
                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
                                             <path d="M3 6h18"/>
-                                            <path d="M8 6V4a2 2 0 0 1 2 2v2"/>
+                                            <path d="M8 6V4a2 2 0 0 1 2 2h4a2 2 0 0 1 2 2v2"/>
                                         </svg>
                                     </p>
                                 </div>
@@ -655,7 +799,7 @@ export class EmployeePage extends LitElement {
     }
 
     renderPagination() {
-        const totalEmployees = this.employees.length;
+        const totalEmployees = this.filteredEmployees.length;
         const startItem = totalEmployees === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
         const endItem = Math.min(this.currentPage * this.itemsPerPage, totalEmployees);
 
@@ -737,9 +881,40 @@ export class EmployeePage extends LitElement {
                         </button>
                     </div>
                 </div>
+
+                <!-- Search Container -->
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="${getMessage('search_employees_placeholder') || 'Search by name, phone, or email...'}"
+                        .value=${this.searchQuery}
+                        @input=${this.handleSearchInput}
+                    />
+                    ${this.searchQuery ? html`
+                        <button 
+                            class="clear-search-btn" 
+                            @click=${this.clearSearch}
+                            title="${getMessage('clear_search') || 'Clear search'}">
+                            ${getMessage('clear_search') || 'Clear'}
+                        </button>
+                    ` : ''}
+                </div>
+
+                <!-- Search Results Info -->
+                ${this.searchQuery && this.filteredEmployees.length !== this.employees.length ? html`
+                    <div class="search-results-info">
+                        ${formatMessage(getMessage('search_results_info') || 'Found {0} of {1} employees', this.filteredEmployees.length, this.employees.length)}
+                    </div>
+                ` : ''}
                 
-                ${this.employees.length === 0
-                ? html`<card-component><div slot="body" class="no-employees">${getMessage('no_employees')}</div></card-component>`
+                ${this.filteredEmployees.length === 0
+                ? html`<card-component><div slot="body" class="no-employees">
+                    ${this.searchQuery 
+                        ? (getMessage('no_search_results') || 'No employees found matching your search.')
+                        : getMessage('no_employees')
+                    }
+                </div></card-component>`
                 : this.viewMode === 'grid'
                     ? this.renderGridView()
                     : this.renderListView()

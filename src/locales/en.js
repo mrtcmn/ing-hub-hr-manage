@@ -25,7 +25,7 @@ export const messages = {
   'email': 'Email',
   'position': 'Position',
   'department': 'Department',
-  'salary': 'Salary',
+
   'hire_date': 'Hire Date',
   'actions': 'Actions',
   'save': 'Save',
@@ -58,8 +58,7 @@ export const messages = {
   'phone_max_length': 'Phone number must be less than 20 characters',
   'department_required': 'Please select a department',
   'position_required': 'Please select a position',
-  'salary_min': 'Salary must be at least $30,000',
-  'salary_max': 'Salary must be less than $200,000',
+
   'date_future_error': 'Date of employment cannot be in the future',
   'date_required': 'Please select a date of employment',
   // UI text
@@ -77,7 +76,7 @@ export const messages = {
   'enter_last_name': 'Enter last name',
   'enter_email_address': 'Enter email address',
   'enter_phone_number': 'Enter phone number',
-  'enter_salary': 'Enter salary',
+
   'updating': 'Updating...',
   'create_employee': 'Create Employee',
   'update_employee': 'Update Employee',
@@ -103,5 +102,10 @@ export const messages = {
   'first_name_last_name_exists': 'An employee with this first name and last name already exists',
   'email_already_exists': 'An employee with this email address already exists',
   'enter_date_of_birth': 'Enter date of birth',
-  'date_of_birth_required': 'Date of birth is required'
+  'date_of_birth_required': 'Date of birth is required',
+  // Search functionality
+  'search_employees_placeholder': 'Search by name, phone, or email...',
+  'clear_search': 'Clear',
+  'search_results_info': 'Found {0} of {1} employees',
+  'no_search_results': 'No employees found matching your search.'
 };

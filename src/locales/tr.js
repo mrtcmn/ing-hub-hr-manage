@@ -14,7 +14,7 @@ export const messages = {
   'email': 'E-posta',
   'position': 'Pozisyon',
   'department': 'Departman',
-  'salary': 'Maaş',
+
   'hire_date': 'İşe Başlama Tarihi',
   'actions': 'İşlemler',
   'save': 'Kaydet',
@@ -47,8 +47,7 @@ export const messages = {
   'phone_max_length': 'Telefon numarası 20 karakterden az olmalıdır',
   'department_required': 'Lütfen bir departman seçin',
   'position_required': 'Lütfen bir pozisyon seçin',
-  'salary_min': 'Maaş en az $30,000 olmalıdır',
-  'salary_max': 'Maaş $200,000\'dan az olmalıdır',
+
   'date_future_error': 'İşe başlama tarihi gelecekte olamaz',
   'date_required': 'Lütfen işe başlama tarihi seçin',
   // UI text
@@ -66,7 +65,7 @@ export const messages = {
   'enter_last_name': 'Soyad girin',
   'enter_email_address': 'E-posta adresi girin',
   'enter_phone_number': 'Telefon numarası girin',
-  'enter_salary': 'Maaş girin',
+
   'updating': 'Güncelleniyor...',
   'create_employee': 'Çalışan Oluştur',
   'update_employee': 'Çalışanı Güncelle',
@@ -92,5 +91,10 @@ export const messages = {
   'first_name_last_name_exists': 'Bu ad ve soyada sahip bir çalışan zaten mevcut',
   'email_already_exists': 'Bu e-posta adresine sahip bir çalışan zaten mevcut',
   'enter_date_of_birth': 'Doğum tarihi girin',
-  'date_of_birth_required': 'Doğum tarihi gerekli'
+  'date_of_birth_required': 'Doğum tarihi gerekli',
+  // Search functionality
+  'search_employees_placeholder': 'Ad, telefon veya e-posta ile ara...',
+  'clear_search': 'Temizle',
+  'search_results_info': '{0} çalışan bulundu, toplam {1} çalışan',
+  'no_search_results': 'Aramanızla eşleşen çalışan bulunamadı.'
 };

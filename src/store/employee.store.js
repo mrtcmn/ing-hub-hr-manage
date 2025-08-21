@@ -13,7 +13,6 @@ const store = createStore((set, get) => ({
             phone: '1234567890',
             department: 'Analytics',
             position: 'Senior',
-            salary: 75000,
             dateOfEmployment: '2022-01-15T00:00:00.000Z',
             dateOfBirth: '1985-03-15T00:00:00.000Z'
         },
@@ -25,7 +24,6 @@ const store = createStore((set, get) => ({
             phone: '0987654321',
             department: 'Tech',
             position: 'Lead',
-            salary: 85000,
             dateOfEmployment: '2021-06-20T00:00:00.000Z',
             dateOfBirth: '1988-07-22T00:00:00.000Z'
         },
@@ -37,7 +35,6 @@ const store = createStore((set, get) => ({
             phone: '5551234567',
             department: 'Marketing',
             position: 'Medior',
-            salary: 65000,
             dateOfEmployment: '2023-03-10T00:00:00.000Z',
             dateOfBirth: '1990-11-08T00:00:00.000Z'
         },
@@ -49,7 +46,6 @@ const store = createStore((set, get) => ({
             phone: '5559876543',
             department: 'Sales',
             position: 'Senior',
-            salary: 70000,
             dateOfEmployment: '2022-08-15T00:00:00.000Z',
             dateOfBirth: '1987-04-12T00:00:00.000Z'
         },
@@ -61,7 +57,6 @@ const store = createStore((set, get) => ({
             phone: '5554567890',
             department: 'Tech',
             position: 'Junior',
-            salary: 55000,
             dateOfEmployment: '2023-09-01T00:00:00.000Z',
             dateOfBirth: '1995-09-25T00:00:00.000Z'
         },
@@ -73,7 +68,6 @@ const store = createStore((set, get) => ({
             phone: '5557890123',
             department: 'HR',
             position: 'Medior',
-            salary: 60000,
             dateOfEmployment: '2022-11-20T00:00:00.000Z',
             dateOfBirth: '1992-01-30T00:00:00.000Z'
         },
@@ -85,7 +79,6 @@ const store = createStore((set, get) => ({
             phone: '5553210987',
             department: 'Analytics',
             position: 'Lead',
-            salary: 80000,
             dateOfEmployment: '2021-12-10T00:00:00.000Z',
             dateOfBirth: '1983-12-05T00:00:00.000Z'
         },
@@ -97,7 +90,6 @@ const store = createStore((set, get) => ({
             phone: '5556543210',
             department: 'Marketing',
             position: 'Manager',
-            salary: 90000,
             dateOfEmployment: '2020-05-15T00:00:00.000Z',
             dateOfBirth: '1980-06-18T00:00:00.000Z'
         },
@@ -109,7 +101,6 @@ const store = createStore((set, get) => ({
             phone: '5550123456',
             department: 'Sales',
             position: 'Junior',
-            salary: 50000,
             dateOfEmployment: '2023-06-01T00:00:00.000Z',
             dateOfBirth: '1997-02-14T00:00:00.000Z'
         },
@@ -121,7 +112,6 @@ const store = createStore((set, get) => ({
             phone: '5552345678',
             department: 'Tech',
             position: 'Senior',
-            salary: 75000,
             dateOfEmployment: '2022-03-20T00:00:00.000Z',
             dateOfBirth: '1986-10-03T00:00:00.000Z'
         },
@@ -133,7 +123,6 @@ const store = createStore((set, get) => ({
             phone: '5558765432',
             department: 'Analytics',
             position: 'Medior',
-            salary: 65000,
             dateOfEmployment: '2023-01-10T00:00:00.000Z',
             dateOfBirth: '1991-05-20T00:00:00.000Z'
         },
@@ -145,7 +134,6 @@ const store = createStore((set, get) => ({
             phone: '5553456789',
             department: 'HR',
             position: 'Senior',
-            salary: 70000,
             dateOfEmployment: '2021-09-05T00:00:00.000Z',
             dateOfBirth: '1989-08-27T00:00:00.000Z'
         },
@@ -157,7 +145,6 @@ const store = createStore((set, get) => ({
             phone: '5555678901',
             department: 'Marketing',
             position: 'Junior',
-            salary: 52000,
             dateOfEmployment: '2023-07-15T00:00:00.000Z',
             dateOfBirth: '1996-03-11T00:00:00.000Z'
         },
@@ -169,7 +156,6 @@ const store = createStore((set, get) => ({
             phone: '5556789012',
             department: 'Sales',
             position: 'Medior',
-            salary: 62000,
             dateOfEmployment: '2022-12-01T00:00:00.000Z',
             dateOfBirth: '1993-07-09T00:00:00.000Z'
         },
@@ -181,7 +167,6 @@ const store = createStore((set, get) => ({
             phone: '5557890123',
             department: 'Tech',
             position: 'Lead',
-            salary: 82000,
             dateOfEmployment: '2021-04-20T00:00:00.000Z',
             dateOfBirth: '1984-11-16T00:00:00.000Z'
         },
@@ -193,7 +178,6 @@ const store = createStore((set, get) => ({
             phone: '5558901234',
             department: 'Analytics',
             position: 'Junior',
-            salary: 54000,
             dateOfEmployment: '2023-10-01T00:00:00.000Z',
             dateOfBirth: '1998-01-05T00:00:00.000Z'
         },
@@ -205,7 +189,6 @@ const store = createStore((set, get) => ({
             phone: '5559012345',
             department: 'Marketing',
             position: 'Senior',
-            salary: 72000,
             dateOfEmployment: '2022-06-15T00:00:00.000Z',
             dateOfBirth: '1988-12-22T00:00:00.000Z'
         },
@@ -217,7 +200,6 @@ const store = createStore((set, get) => ({
             phone: '5550123456',
             department: 'HR',
             position: 'Junior',
-            salary: 48000,
             dateOfEmployment: '2023-11-01T00:00:00.000Z',
             dateOfBirth: '1999-04-08T00:00:00.000Z'
         },
@@ -229,7 +211,6 @@ const store = createStore((set, get) => ({
             phone: '5551234567',
             department: 'Sales',
             position: 'Manager',
-            salary: 95000,
             dateOfEmployment: '2020-08-10T00:00:00.000Z',
             dateOfBirth: '1978-09-30T00:00:00.000Z'
         },
@@ -241,7 +222,6 @@ const store = createStore((set, get) => ({
             phone: '5552345678',
             department: 'Tech',
             position: 'Medior',
-            salary: 68000,
             dateOfEmployment: '2022-02-28T00:00:00.000Z',
             dateOfBirth: '1990-03-17T00:00:00.000Z'
         },
@@ -253,7 +233,6 @@ const store = createStore((set, get) => ({
             phone: '5553456789',
             department: 'Analytics',
             position: 'Senior',
-            salary: 78000,
             dateOfEmployment: '2021-11-15T00:00:00.000Z',
             dateOfBirth: '1982-06-25T00:00:00.000Z'
         },
@@ -265,7 +244,6 @@ const store = createStore((set, get) => ({
             phone: '5554567890',
             department: 'Marketing',
             position: 'Lead',
-            salary: 85000,
             dateOfEmployment: '2020-12-01T00:00:00.000Z',
             dateOfBirth: '1981-01-12T00:00:00.000Z'
         }

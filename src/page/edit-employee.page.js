@@ -13,11 +13,11 @@ const employeeSchema = z.object({
     firstName: z.string()
         .min(2, 'first_name_min_length')
         .max(50, 'first_name_max_length')
-        .regex(/^[a-zA-ZÀ-ÿ\s]+$/, 'first_name_invalid_chars'),
+        .regex(/^[a-z ,.'-IıUuÜüŞşĞğİiÖöÇç]+$/i, 'first_name_invalid_chars'),
     lastName: z.string()
         .min(2, 'last_name_min_length')
         .max(50, 'last_name_max_length')
-        .regex(/^[a-zA-ZÀ-ÿ\s]+$/, 'last_name_invalid_chars'),
+        .regex(/^[a-z ,.'-IıUuÜüŞşĞğİiÖöÇç]+$/i, 'last_name_invalid_chars'),
     email: z
         .email('email_invalid')
         .min(5, 'email_min_length')
@@ -30,8 +30,7 @@ const employeeSchema = z.object({
         .min(1, 'department_required'),
     position: z.string()
         .min(1, 'position_required'),
-    salary: z.number()
-        .min(1, 'salary_min'),
+
     dateOfEmployment: z.coerce.date().max(new Date(), 'date_future_error'),
     dateOfBirth: z.coerce.date().max(new Date(), 'date_future_error')
 });
@@ -74,7 +73,7 @@ export class EditEmployeePage extends LitElement {
                 phone: '',
                 department: '',
                 position: '',
-                salary: 0,
+
                 dateOfEmployment: '',
                 dateOfBirth: ''
             },
@@ -235,7 +234,7 @@ export class EditEmployeePage extends LitElement {
             this.form.api.setFieldValue('phone', this.employee.phone);
             this.form.api.setFieldValue('department', this.employee.department);
             this.form.api.setFieldValue('position', this.employee.position);
-            this.form.api.setFieldValue('salary', this.employee.salary);
+
             this.form.api.setFieldValue('dateOfEmployment', this.employee.dateOfEmployment.split('T')[0]);
             this.form.api.setFieldValue('dateOfBirth', this.employee.dateOfBirth ? this.employee.dateOfBirth.split('T')[0] : '');
 
@@ -413,21 +412,7 @@ export class EditEmployeePage extends LitElement {
                 <form @submit=${this.handleSubmit} class="edit-form">
                         ${this.form.field(
             {
-                name: 'firstName',
-                validators: {
-                    onChange: ({ value }) => {
-                        if (!value || value.length < 2) {
-                            return getMessage('first_name_min_length');
-                        }
-                        if (value.length > 50) {
-                            return getMessage('first_name_max_length');
-                        }
-                        if (!/^[a-zA-Z\s]+$/.test(value)) {
-                            return getMessage('first_name_invalid_chars');
-                        }
-                        return undefined;
-                    }
-                }
+                name: 'firstName'
             },
             (field) => html`
                                 <text-input
@@ -445,21 +430,7 @@ export class EditEmployeePage extends LitElement {
 
                         ${this.form.field(
             {
-                name: 'lastName',
-                validators: {
-                    onBlur: ({ value }) => {
-                        if (!value || value.length < 2) {
-                            return getMessage('last_name_min_length');
-                        }
-                        if (value.length > 50) {
-                            return getMessage('last_name_max_length');
-                        }
-                        if (!/^[a-zA-Z\s]+$/.test(value)) {
-                            return getMessage('last_name_invalid_chars');
-                        }
-                        return undefined;
-                    }
-                }
+                name: 'lastName'
             },
             (field) => html`
                                 <text-input
@@ -477,16 +448,7 @@ export class EditEmployeePage extends LitElement {
 
                         ${this.form.field(
             {
-                name: 'email',
-                validators: {
-                    onBlur: ({ value }) => {
-                        if (!value) return getMessage('email_required');
-                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                            return getMessage('email_invalid');
-                        }
-                        return undefined;
-                    }
-                }
+                name: 'email'
             },
             (field) => html`
                                 <text-input
@@ -505,19 +467,7 @@ export class EditEmployeePage extends LitElement {
 
                         ${this.form.field(
             {
-                name: 'phone',
-                validators: {
-                    onBlur: ({ value }) => {
-                        if (!value) return getMessage('phone_required');
-                        if (!/^[\d\s\-\+\(\)]+$/.test(value)) {
-                            return getMessage('phone_invalid');
-                        }
-                        if (value.replace(/\D/g, '').length < 10) {
-                            return getMessage('phone_min_length');
-                        }
-                        return undefined;
-                    }
-                }
+                name: 'phone'
             },
             (field) => html`
                                 <text-input
@@ -535,13 +485,7 @@ export class EditEmployeePage extends LitElement {
 
                         ${this.form.field(
             {
-                name: 'department',
-                validators: {
-                    onBlur: ({ value }) => {
-                        if (!value) return getMessage('department_required');
-                        return undefined;
-                    }
-                }
+                name: 'department'
             },
             (field) => html`
                                 <input-dropdown
@@ -562,13 +506,7 @@ export class EditEmployeePage extends LitElement {
 
                         ${this.form.field(
             {
-                name: 'position',
-                validators: {
-                    onBlur: ({ value }) => {
-                        if (!value) return getMessage('position_required');
-                        return undefined;
-                    }
-                }
+                name: 'position'
             },
             (field) => html`
                                 <input-dropdown
@@ -587,50 +525,11 @@ export class EditEmployeePage extends LitElement {
                             `
         )}
 
-                        ${this.form.field(
-            {
-                name: 'salary',
-                validators: {
-                    onBlur: ({ value }) => {
-                        if (!value || value < 30000) {
-                            return getMessage('salary_min');
-                        }
-                        if (value > 200000) {
-                            return getMessage('salary_max');
-                        }
-                        return undefined;
-                    }
-                }
-            },
-            (field) => html`
-                                <text-input
-                                    label="${getMessage('salary')}"
-                                    .value=${field.state.value}
-                                    .error=${this.getError(field)}
-                                    .required=${true}
-                                    name="salary"
-                                    type="number"
-                                    .disabled=${this.isSubmitting}
-                                    placeholder="${getMessage('enter_salary')}"
-                                    @input=${(e) => field.handleChange(parseInt(e.currentTarget.value) || 0)}
-                                ></text-input>
-                            `
-        )}
+
 
                         ${this.form.field(
             {
                 name: 'dateOfEmployment',
-                validators: {
-                    onBlur: ({ value }) => {
-                        if (!value) return getMessage('date_required');
-                        const selectedDate = new Date(value);
-                        const today = new Date();
-                        if (selectedDate > today) {
-                            return getMessage('date_future_error');
-                        }
-                        return undefined;
-                    }
-                }
             },
             (field) => html`
                                 <text-input
@@ -648,33 +547,7 @@ export class EditEmployeePage extends LitElement {
 
                         ${this.form.field(
             {
-                name: 'dateOfBirth',
-                validators: {
-                    onBlur: ({ value }) => {
-                        if (!value) return getMessage('date_of_birth_required');
-                        const selectedDate = new Date(value);
-                        const today = new Date();
-                        if (selectedDate > today) {
-                            return getMessage('date_future_error');
-                        }
-
-                        // Check uniqueness with firstName and lastName if both are filled
-                        const firstName = this.form.api.getFieldValue('firstName');
-                        const lastName = this.form.api.getFieldValue('lastName');
-                        if (value && firstName && lastName) {
-                            if (store.getState().checkNameBirthdayUniqueness(
-                                firstName,
-                                lastName,
-                                value,
-                                this.employeeId === 'new' ? null : parseInt(this.employeeId)
-                            )) {
-                                return getMessage('first_name_last_name_birthday_exists');
-                            }
-                        }
-
-                        return undefined;
-                    }
-                }
+                name: 'dateOfBirth'
             },
             (field) => html`
               <text-input
