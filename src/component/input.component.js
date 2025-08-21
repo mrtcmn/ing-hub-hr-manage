@@ -14,7 +14,7 @@ export class BaseInput extends LitElement {
         --input-font-size: 14px;
         --input-font-family: 'Geist', sans-serif;
         --input-color: #1a202c;
-        --input-focus-border-color: #3b82f6;
+        --input-focus-border-color: #ff6303;
         --input-focus-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         --input-disabled-background: #f7fafc;
         --input-disabled-color: #a0aec0;
@@ -138,7 +138,7 @@ export class TextInput extends LitElement {
         --text-input-font-size: 14px;
         --text-input-font-family: 'Geist', sans-serif;
         --text-input-color: #1a202c;
-        --text-input-focus-border-color: #3b82f6;
+        --text-input-focus-border-color: #ff6303;
         --text-input-focus-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         --text-input-disabled-background: #f7fafc;
         --text-input-disabled-color: #a0aec0;
@@ -270,7 +270,7 @@ export class Dropdown extends LitElement {
         --dropdown-font-size: 14px;
         --dropdown-font-family: 'Geist', sans-serif;
         --dropdown-color: #1a202c;
-        --dropdown-focus-border-color: #3b82f6;
+        --dropdown-focus-border-color: #ff6303;
         --dropdown-focus-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         --dropdown-disabled-background: #f7fafc;
         --dropdown-disabled-color: #a0aec0;
@@ -429,7 +429,7 @@ export class Button extends LitElement {
         --button-font-size: 14px;
         --button-font-weight: 500;
         --button-color: #404040;
-        --button-hover-background: rgba(59, 130, 246, 0.05);
+        --button-hover-background: #ff6303;
         --button-hover-border-color: #404040;
         --button-hover-color: #404040;
         --button-disabled-background: #f7fafc;

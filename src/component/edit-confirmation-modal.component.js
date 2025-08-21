@@ -159,10 +159,6 @@ export class EditConfirmationModalComponent extends LitElement {
       .modal-message {
         padding: 15px;
       }
-      
-      .modal-actions {
-        padding: 0 15px 15px 15px;
-      }
     }
   `;
 
