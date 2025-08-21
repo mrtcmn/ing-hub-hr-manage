@@ -27,8 +27,8 @@ export default {
       patterns: ['public/**/*'],
     }),
     copy({
-      patterns: ['locales/**/*'],
-      rootDir: 'src',
+      patterns: ['**/*'],
+      rootDir: 'src/locales',
     }),
   ],
   output: {

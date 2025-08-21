@@ -53,9 +53,24 @@ if (!['dev', 'prod'].includes(mode)) {
 const browsers = {
   // Local browser testing via playwright
   // ===========
-  chromium: playwrightLauncher({ product: 'chromium' }),
-  firefox: playwrightLauncher({ product: 'firefox' }),
-  webkit: playwrightLauncher({ product: 'webkit' }),
+  chromium: playwrightLauncher({ 
+    product: 'chromium',
+    launchOptions: {
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+    }
+  }),
+  firefox: playwrightLauncher({ 
+    product: 'firefox',
+    launchOptions: {
+      args: ['--no-sandbox']
+    }
+  }),
+  webkit: playwrightLauncher({ 
+    product: 'webkit',
+    launchOptions: {
+      args: ['--no-sandbox']
+    }
+  }),
 
   // Uncomment example launchers for running on Sauce Labs
   // ===========
@@ -99,6 +114,10 @@ export default {
       timeout: '60000',
     },
   },
+  // Add configuration to improve test stability
+  concurrentBrowsers: 1,
+  browserStartTimeout: 30000,
+  browserStopTimeout: 30000,
   plugins: [
     // Detect browsers without modules (e.g. IE11) and transform to SystemJS
     // (https://modern-web.dev/docs/dev-server/plugins/legacy/).
