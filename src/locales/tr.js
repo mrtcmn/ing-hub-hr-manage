@@ -50,6 +50,8 @@ export const messages = {
 
   'date_future_error': 'İşe başlama tarihi gelecekte olamaz',
   'date_required': 'Lütfen işe başlama tarihi seçin',
+  'date_of_birth_future_error': 'Doğum tarihi gelecekte olamaz',
+  'date_of_birth_too_old': 'Doğum tarihi 1 Ocak 1925\'ten daha eski olamaz',
   // UI text
   'are_you_sure': 'Emin misiniz?',
   'close': 'Kapat',

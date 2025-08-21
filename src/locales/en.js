@@ -61,6 +61,8 @@ export const messages = {
 
   'date_future_error': 'Date of employment cannot be in the future',
   'date_required': 'Please select a date of employment',
+  'date_of_birth_future_error': 'Date of birth cannot be in the future',
+  'date_of_birth_too_old': 'Date of birth cannot be earlier than January 1, 1925',
   // UI text
   'are_you_sure': 'Are you sure?',
   'close': 'Close',
