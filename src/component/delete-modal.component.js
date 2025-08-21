@@ -177,16 +177,13 @@ export class DeleteModalComponent extends LitElement {
 
 
   open(employeeName, employeeId) {
-    console.log('DeleteModal open method called with:', employeeName, employeeId);
     this.employeeName = employeeName;
     this.employeeId = employeeId;
     this.isOpen = true;
-    console.log('isOpen set to:', this.isOpen);
     document.body.style.overflow = 'hidden';
   }
 
   close() {
-    console.log("close");
     this.isOpen = false;
     document.body.style.overflow = '';
   }

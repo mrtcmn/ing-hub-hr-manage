@@ -1,5 +1,4 @@
 // This file imports all source files to ensure coverage measurement
-import './my-element.js';
 import './root.element.js';
 import './page/employee.page.js';
 import './store/employee.store.js';

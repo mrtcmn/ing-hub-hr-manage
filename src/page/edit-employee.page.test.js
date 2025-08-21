@@ -1,6 +1,6 @@
 import { assert, fixture, html } from '@open-wc/testing';
-import { EditEmployeePage } from '../../src/page/edit-employee.page.js';
-import store from '../../src/store/employee.store.js';
+import { EditEmployeePage } from './edit-employee.page.js';
+import store from '../store/employee.store.js';
 
 suite('EditEmployeePage - Uniqueness Validation', () => {
     let element;

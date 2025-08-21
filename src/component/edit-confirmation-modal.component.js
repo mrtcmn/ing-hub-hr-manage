@@ -170,15 +170,12 @@ export class EditConfirmationModalComponent extends LitElement {
   }
 
   open(employeeName) {
-    console.log('EditConfirmationModal open method called with:', employeeName);
     this.employeeName = employeeName;
     this.isOpen = true;
-    console.log('isOpen set to:', this.isOpen);
     document.body.style.overflow = 'hidden';
   }
 
   close() {
-    console.log("close");
     this.isOpen = false;
     document.body.style.overflow = '';
   }

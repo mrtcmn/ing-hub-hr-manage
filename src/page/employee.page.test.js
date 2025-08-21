@@ -1,5 +1,5 @@
 import { fixture, assert, html } from '@open-wc/testing';
-import { EmployeePage } from '../../src/page/employee.page.js';
+import { EmployeePage } from './employee.page.js';
 
 suite('EmployeePage Search Functionality', () => {
     let element;

@@ -1,5 +1,5 @@
 import { assert } from '@open-wc/testing';
-import store from '../../src/store/employee.store.js';
+import store from './employee.store.js';
 
 suite('Employee Store - Uniqueness Validation', () => {
     let originalEmployees;

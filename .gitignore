@@ -16,3 +16,11 @@ test-coverage/*
 .env.development
 .env.test
 .env.production
+build/index.html
+build/root.element.js
+build/assets/main-CRg7peaw.css
+build/assets/polyfill-support-BdcE0Z4r.js
+build/assets/webcomponents-loader-CmDSzMfG.js
+build/public/logo.jpg
+build/public/flags/en.svg
+build/public/flags/tr.svg

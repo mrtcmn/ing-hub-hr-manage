@@ -1,5 +1,4 @@
 import { LitElement, html, css } from 'lit';
-import './my-element.js';
 import './page/employee.page.js';
 import './page/edit-employee.page.js';
 import './component/navbar.component.js';
@@ -52,7 +51,6 @@ class RootElement extends LitElement {
 
             await setLocale(locale);
             this.currentLocale = locale;
-            localStorage.setItem('locale', locale);
             this.requestUpdate();
         } catch (error) {
             console.error('Failed to load locale:', error);
